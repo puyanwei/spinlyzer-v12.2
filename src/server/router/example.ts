@@ -1,5 +1,6 @@
 import { createRouter } from './context';
 import { z } from 'zod';
+import { prisma } from '../db/client';
 
 export const exampleRouter = createRouter()
   .query('hello', {
@@ -15,12 +16,22 @@ export const exampleRouter = createRouter()
     },
   })
   .query('getAll', {
-    async resolve({ ctx }) {
-      try {
-        const egg = await ctx.prisma.example.findMany();
-        return egg;
-      } catch (error) {
-        console.error('error', error);
-      }
+    async resolve() {
+      return await prisma.example.findMany();
+    },
+  })
+  .mutation('create', {
+    input: z.object({
+      firstName: z.string(),
+      surname: z.string(),
+    }),
+    async resolve({ input }) {
+      const egg = await prisma.example.create({
+        data: {
+          firstName: input.firstName,
+          surname: input.surname,
+        },
+      });
+      return egg;
     },
   });

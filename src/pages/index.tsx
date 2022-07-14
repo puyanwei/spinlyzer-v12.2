@@ -1,11 +1,18 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useEffect } from 'react';
 import { trpc } from '../utils/trpc';
 
 const Home: NextPage = () => {
   // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
   const hello = trpc.useQuery(['example.getAll']);
-  console.log('hello', hello);
+  const mutation = trpc.useMutation(['example.create']);
+
+  // useEffect(() => {
+  //   const res = mutation.mutate({ firstName: 'AA', surname: 'MM' });
+  //   console.log(res);
+  // }, []);
+
   return (
     <>
       <Head>

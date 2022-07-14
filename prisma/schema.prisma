@@ -14,6 +14,8 @@ generator client {
 
 model Example {
     id String @id @default(auto()) @map("_id") @db.ObjectId
+    firstName String?
+    surname String?
 }
 
 // Necessary for Next auth
