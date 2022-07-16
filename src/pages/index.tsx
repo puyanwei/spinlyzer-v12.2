@@ -5,8 +5,8 @@ import { trpc } from '../utils/trpc';
 import Link from 'next/link';
 
 const Home: NextPage = () => {
-  const hello = trpc.useQuery(['example.getAll']);
-  const mutation = trpc.useMutation(['example.create']);
+  // const hello = trpc.useQuery(['example.getAll']);
+  // const mutation = trpc.useMutation(['example.create']);
 
   // useEffect(() => {
   //   const res = mutation.mutate({ firstName: 'AA', surname: 'MM' });
