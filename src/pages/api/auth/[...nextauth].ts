@@ -33,12 +33,12 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  callbacks: {
-    session: async ({ session, user }) => {
-      session.id = user.id;
-      return Promise.resolve(session);
-    },
-  },
+  // callbacks: {
+  //   session: async ({ session, user }) => {
+  //     session.id = user.id;
+  //     return Promise.resolve(session);
+  //   },
+  // },
   secret: process.env.SECRET,
 };
 
