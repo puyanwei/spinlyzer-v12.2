@@ -22,7 +22,10 @@ const Home: NextPage = () => {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <div className='grid w-screen min-h-screen p-4 overflow-hidden place-items-center'>
+      <div
+        className='grid w-screen min-h-screen p-4 overflow-hidden place-items-center'
+        data-testid='homepage'
+      >
         {session ? (
           <>
             <div>Welcome</div>
