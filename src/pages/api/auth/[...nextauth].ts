@@ -17,22 +17,23 @@ export const authOptions: NextAuthOptions = {
         timeout: 10000,
       },
     }),
-    // ...add more providers here
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        name: {
-          label: 'Name',
-          type: 'text',
-          placeholder: 'Enter your name',
-        },
-      },
-      async authorize(credentials, _req) {
-        const user = { id: 1, name: credentials?.name ?? 'J Smith' };
-        return user;
-      },
-    }),
   ],
+  // ...add more providers here
+  //   CredentialsProvider({
+  //     name: 'Credentials',
+  //     credentials: {
+  //       name: {
+  //         label: 'Name',
+  //         type: 'text',
+  //         placeholder: 'Enter your name',
+  //       },
+  //     },
+  //     async authorize(credentials, _req) {
+  //       const user = { id: 1, name: credentials?.name ?? 'J Smith' };
+  //       return user;
+  //     },
+  //   }),
+  // ],
   // callbacks: {
   //   session: async ({ session, user }) => {
   //     session.id = user.id;
