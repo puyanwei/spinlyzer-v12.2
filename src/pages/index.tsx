@@ -1,12 +1,10 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useSession } from 'next-auth/react';
-import { useEffect } from 'react';
 import { trpc } from '../utils/trpc';
 import Link from 'next/link';
 
 const Home: NextPage = () => {
-  // const hello = trpc.useQuery(["example.hello", { text: "from tRPC" }]);
   const hello = trpc.useQuery(['example.getAll']);
   const mutation = trpc.useMutation(['example.create']);
 

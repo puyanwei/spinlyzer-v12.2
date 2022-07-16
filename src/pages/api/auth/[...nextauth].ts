@@ -30,13 +30,13 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  // callbacks: {
-  //   session: async ({ session, user }) => {
-  //     session.id = user.id;
-  //     return Promise.resolve(session);
-  //   },
-  // },
-  secret: process.env.JWT_SECRET,
+  callbacks: {
+    session: async ({ session, user }) => {
+      session.id = user.id;
+      return Promise.resolve(session);
+    },
+  },
+  secret: process.env.SECRET,
 };
 
 export default NextAuth(authOptions);
