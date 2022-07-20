@@ -1,4 +1,4 @@
-import { getElementWordBasedOnIndex } from './common';
+import { getElementWordBasedOnIndex } from '../utils/common';
 
 interface Statistics {
   tournamentNumber: string;
@@ -22,7 +22,7 @@ interface Statistics {
 
 export function spinFileFormatter(text: string): Statistics | null {
   const textArray = text.replace(/(\r\n|\n|\r)/gm, '').split(' ');
-  if (!text || '') return null;
+  if (!text || text === '' || textArray.length === 0) return null;
 
   const textInBrackets = text
     ?.match(/\(([^()]*)\)/g)

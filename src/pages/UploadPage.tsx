@@ -1,5 +1,11 @@
-import React, { useCallback, useState } from 'react';
+import React, { CSSProperties, useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import {
+  baseStyle,
+  activeStyle,
+  acceptStyle,
+  rejectStyle,
+} from '../styles/dropzoneStyles';
 import { Component } from '../types';
 
 const rejectedFileTypeErrorMessage = `File type invalid. Please submit a .txt file and try again`;
@@ -38,14 +44,32 @@ export default function UploadPage({ testId }: Props) {
     });
   }, []);
 
-  const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    onDrop,
+  });
+
+  const style: CSSProperties = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isDragActive ? activeStyle : {}),
+      ...(isDragAccept ? acceptStyle : {}),
+      ...(isDragReject ? rejectStyle : {}),
+    }),
+    [isDragActive, isDragReject, isDragAccept]
+  );
 
   return (
     <div data-testid={testId}>
       This is the upload page
-      <div {...getRootProps()}>
+      <div {...getRootProps({ style })}>
         <input {...getInputProps()} />
-        <p>Drag and drop some files here, or click to select files</p>
+        <p>Upload hand histories</p>
       </div>
       <div>{errorMsg}</div>
     </div>

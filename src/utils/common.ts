@@ -20,5 +20,6 @@ export function getElementWordBasedOnIndex(
   startingWord: string,
   elementMovement: number = 1
 ) {
-  return array[array.indexOf(startingWord) + elementMovement];
+  if (array.length === 0 || !startingWord) return null;
+  return array[array?.indexOf(startingWord) + elementMovement];
 }
