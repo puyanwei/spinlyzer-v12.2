@@ -3,17 +3,10 @@ import Head from 'next/head';
 import { useSession } from 'next-auth/react';
 import { trpc } from '../utils/trpc';
 import Link from 'next/link';
+import UploadPage from './UploadPage';
 
-const Home: NextPage = () => {
-  // const mutation = trpc.useMutation(['example.create']);
-
-  // useEffect(() => {
-  //   const res = mutation.mutate({ firstName: 'AA', surname: 'MM' });
-  //   console.log(res);
-  // }, []);
-
+const HomePage: NextPage = () => {
   const { data: session } = useSession();
-  console.log('session', session);
   return (
     <>
       <Head>
@@ -27,12 +20,7 @@ const Home: NextPage = () => {
         data-testid='homepage'
       >
         {session ? (
-          <>
-            <div>Welcome</div>
-            <Link href='/api/auth/signout'>
-              <a className='text-blue-400'>Sign Out</a>
-            </Link>
-          </>
+          <UploadPage />
         ) : (
           <Link href='/api/auth/signin'>
             <a className='text-blue-400'>Sign In</a>
@@ -43,4 +31,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;
