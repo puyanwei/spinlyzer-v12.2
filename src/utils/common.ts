@@ -5,9 +5,11 @@ export function getPercentage(numerator: number, total: number): string {
 export function countHashKeys(
   data: Record<string, string>[],
   keyToCount: string
-) {
+): Record<string, number> | null {
+  if (!data) return null
   const hash = {};
   data.forEach((obj) => {
+    if (!obj) return null
     const key = obj[keyToCount];
     hash[key] = hash[key] ? hash[key] + 1 : 1;
   });
