@@ -1,20 +1,30 @@
+import { string } from 'zod';
+
 export function getPercentage(numerator: number, total: number): string {
   return ((numerator / total) * 100).toFixed(2);
 }
 
 export function countHashKeys(
   data: Record<string, string>[],
-  keyToCount: string
-): Record<string, number> | null {
-  if (!data) return null
-  const hash = {};
-  data.forEach((obj) => {
-    if (!obj) return null
-    const key = obj[keyToCount];
-    hash[key] = hash[key] ? hash[key] + 1 : 1;
-  });
-  const reorderedObjectByNumberOfDuplicateKeys = hash;
-  return reorderedObjectByNumberOfDuplicateKeys;
+  value: string
+): Record<string, number> | null | {} {
+  if (!data) return null;
+
+  const valuesCounter = data.reduce<Record<string, number>>((obj, item) => {
+    const resolvedValue = item[value];
+    if (!resolvedValue) return obj;
+    const valueHasNumberSoKeyAlreadyExists = Number.isInteger(
+      obj[resolvedValue]
+    );
+    if (!valueHasNumberSoKeyAlreadyExists) obj[resolvedValue] = 0;
+
+    const currentValue = obj[resolvedValue] as number;
+    obj[resolvedValue] = currentValue + 1;
+
+    return obj;
+  }, {});
+
+  return valuesCounter;
 }
 
 export function getElementWordBasedOnIndex(
