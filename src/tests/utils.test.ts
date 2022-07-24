@@ -1,6 +1,6 @@
 import { countHashKeys } from "../utils/common";
 
-describe(`function countHashKeys()`, () => {
+describe(`countHashKeys()`, () => {
   it(`should accept an array of objects and count the number of times a value was used on a specified key`, () => {
     const data = [
       {
