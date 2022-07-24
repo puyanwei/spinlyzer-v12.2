@@ -1,25 +1,22 @@
-import { string } from 'zod';
-
 export function getPercentage(numerator: number, total: number): string {
   return ((numerator / total) * 100).toFixed(2);
 }
 
-export function countHashKeys(
-  data: Record<string, string>[],
-  value: string
-): Record<string, number> | null | {} {
+export function countHashKeys<T extends Record<string, string>, U extends keyof T>(data: T[], value: U): Record<string, number> | null {
+
   if (!data) return null;
 
   const valuesCounter = data.reduce<Record<string, number>>((obj, item) => {
-    const resolvedValue = item[value];
-    if (!resolvedValue) return obj;
-    const valueHasNumberSoKeyAlreadyExists = Number.isInteger(
-      obj[resolvedValue]
-    );
-    if (!valueHasNumberSoKeyAlreadyExists) obj[resolvedValue] = 0;
+    const newKey = item[value];
+    if (!newKey) return obj;
 
-    const currentValue = obj[resolvedValue] as number;
-    obj[resolvedValue] = currentValue + 1;
+    const hasExistingNumberValue = Number.isInteger(
+      obj[newKey]
+    );
+    if (!hasExistingNumberValue) obj[newKey] = 0;
+
+    const currentValue = obj[newKey] as number
+    obj[newKey] = currentValue + 1;
 
     return obj;
   }, {});
