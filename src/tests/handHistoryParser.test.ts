@@ -1,8 +1,11 @@
-import { putIntoArrayAndRemoveNewLines } from "../../server/router/handHistoryParser";
+import {
+  getTournamentNumber,
+  putIntoArrayAndRemoveNewLines,
+} from "../server/router/handHistoryParser";
 import {
   mockHandHistory1Converted,
   mockHandHistory1,
-} from "./handHistoryParserMocks";
+} from "./mocks/handHistoryParserMocks";
 
 describe(`handhistoryParser.ts`, () => {
   describe(`putIntoArrayAndRemoveNewLines()`, () => {
@@ -21,6 +24,13 @@ describe(`handhistoryParser.ts`, () => {
       const arrayOfNewLines = result.filter((word) => word.includes("/n"));
       expect(result).toEqual(mockHandHistory1Converted);
       expect(arrayOfNewLines).toEqual([]);
+    });
+  });
+
+  describe(`getTournamentNumber()`, () => {
+    it(`gets the tournament number`, () => {
+      const result = getTournamentNumber(mockHandHistory1Converted);
+      expect(result).toEqual(3205974213);
     });
   });
 });
