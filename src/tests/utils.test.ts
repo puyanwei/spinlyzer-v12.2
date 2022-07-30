@@ -1,4 +1,5 @@
-import { countHashKeys } from "../utils/common";
+import { mockHandHistory1Converted } from "./mocks/handHistoryParserMocks";
+import { countHashKeys, findWord } from "../utils/helpers";
 
 describe(`utils.ts`, () => {
   describe(`countHashKeys()`, () => {
@@ -46,5 +47,53 @@ describe(`utils.ts`, () => {
         sup: 2,
       });
     });
+  });
+
+  describe("findWord()", () => {
+    it("returns the word from the array of strings", () => {
+      const result = findWord(mockHandHistory1Converted, "Tournament");
+      expect(result).toEqual("Tournament");
+    });
+    it("returns the word after the chosen one from the array of strings", () => {
+      const result = findWord(mockHandHistory1Converted, "Tournament", 1);
+      expect(result).toEqual("#3205974213,");
+    });
+    it("returns the word before the chosen one from the array of strings", () => {
+      const result = findWord(mockHandHistory1Converted, "Tournament", -1);
+      expect(result).toEqual("PokerStars");
+    });
+    it("throws an error if no matching word is found", () => {
+      expect.assertions(2);
+      try {
+        findWord(mockHandHistory1Converted, "Pokemon");
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error).toHaveProperty("message", "No word found");
+      }
+    });
+    it("throws an error if final index is a negative number", () => {
+      expect.assertions(2);
+      try {
+        findWord(mockHandHistory1Converted, "PokerStars", -8);
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error);
+        expect(error).toHaveProperty(
+          "message",
+          "Element movement parameter too low",
+        );
+      }
+    });
+  });
+  it("throws an error if final index is a higher then the total length of the array", () => {
+    expect.assertions(2);
+    try {
+      findWord(["hello", "world", "this", "is", "a", "test"], "hello", 8);
+    } catch (error) {
+      expect(error).toBeInstanceOf(Error);
+      expect(error).toHaveProperty(
+        "message",
+        "Element movement parameter too high",
+      );
+    }
   });
 });

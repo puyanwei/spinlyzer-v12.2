@@ -1,27 +1,27 @@
 interface Statistics {
-  tournamentNumber: string;
-  buyIn: string;
-  rake: string;
-  totalBuyIn: string;
-  numberOfPlayers: string;
-  prizePool: string;
+  tournamentNumber: number;
+  buyIn: number;
+  rake: number;
+  totalBuyIn: number;
+  numberOfPlayers: number;
+  prizePool: number;
   currency: string;
-  dateStarted: string;
-  timeStarted: string;
+  dateStarted: Date;
+  timeStarted: Date;
   timeRegion: string;
-  first: string;
+  first: number;
   firstCountry: string;
-  second: string;
+  second: number;
   secondCountry: string;
-  third: string;
+  third: number;
   thirdCountry: string;
   result: string;
 }
 
-export function handHistoryParser(data: string): string {
+export function handHistoryParser(data: string): Statistics {
   const preparedHandHistory = putIntoArrayAndRemoveNewLines(data);
   const tournamentNumber = getTournamentNumber(preparedHandHistory);
-  //   const buyIn = getBuyIn(preparedHandHistory);
+  const buyIn = getBuyIn(preparedHandHistory);
   //   const rake = getRake(preparedHandHistory);
   //   const totalBuyIn = getTotalBuyIn(preparedHandHistory);
   //   const numberOfPlayers = getNumberOfPlayers(preparedHandHistory);
@@ -68,9 +68,14 @@ export function putIntoArrayAndRemoveNewLines(data: string): string[] {
 
 export function getTournamentNumber(data: string[]): number {
   const arrayOfHashedWords = data.find((word) => word.startsWith("#"));
-  console.log("arrayOfHashedWords", arrayOfHashedWords);
   if (!arrayOfHashedWords)
     throw new Error("No words starting with hashtags found");
   const tournamentNumber = arrayOfHashedWords?.substring(1) as string;
   return parseInt(tournamentNumber);
+}
+
+export function getBuyIn(data: string[]): number {
+  const arrayOfHashedWords = data.indexOf(`Hold'emBuy-In:`);
+
+  return arrayOfHashedWords;
 }
