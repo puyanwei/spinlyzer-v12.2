@@ -106,7 +106,7 @@ describe(`utils.ts`, () => {
   })
 
   describe("findCountries()", () => {
-    it.only("finds the countries in the data and returns them in an array", () => {
+    it("finds the countries in the data and returns them in an array", () => {
       const result = findCountries(mockHandHistory1)
       expect(result).toEqual(["United Kingdom", "Russia", "Russia"])
     })
