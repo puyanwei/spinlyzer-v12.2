@@ -1,8 +1,10 @@
 import {
   getBuyIn,
+  getRake,
   getTotalBuyIn,
   getTournamentNumber,
   putIntoArrayAndRemoveNewLines,
+  resolveTotalBuyIn,
 } from "../server/router/handHistoryParser"
 import {
   mockHandHistory1Converted,
@@ -40,26 +42,37 @@ describe(`handhistoryParser.ts`, () => {
     })
   })
 
-  describe(`getRake()`, () => {
-    it(`gets the take`, () => {
-      const result = getTotalBuyIn(mockHandHistory1Converted)
-      expect(result).toEqual(5)
+  describe(`resolveTotalBuyIns()`, () => {
+    it(`parses the string after the BuyIn text, splits up the rake and buyin and returns a tuple as a number`, () => {
+      const result = resolveTotalBuyIn(mockHandHistory1Converted)
+      expect(result).toEqual([4.65, 0.35])
     })
     it(`returns null if data does not contain both the rake and the buy in fee`, () => {
-      const data = [`Hold'emBuy-In:`, `$4.65/`]
-      const result = getTotalBuyIn(data)
+      const result = resolveTotalBuyIn(["Hold'emBuy-In:", "$4.65"])
       expect(result).toEqual(null)
+      const anotherResult = resolveTotalBuyIn(["Hold'emBuy-In:", "/$0.35"])
+      expect(anotherResult).toEqual(null)
     })
-  })
-  describe(`getTotalBuyIn()`, () => {
-    it(`gets the buy in`, () => {
-      const result = getTotalBuyIn(mockHandHistory1Converted)
-      expect(result).toEqual(5)
+
+    describe(`getBuyIn()`, () => {
+      it(`gets the take`, () => {
+        const result = getBuyIn(mockHandHistory1Converted)
+        expect(result).toEqual(4.65)
+      })
     })
-    it(`returns null if data does not contain both the rake and the buy in fee`, () => {
-      const data = [`Hold'emBuy-In:`, `$4.65/`]
-      const result = getTotalBuyIn(data)
-      expect(result).toEqual(null)
+
+    describe(`getRake()`, () => {
+      it(`gets the take`, () => {
+        const result = getRake(mockHandHistory1Converted)
+        expect(result).toEqual(0.35)
+      })
+    })
+
+    describe(`getTotalBuyIn()`, () => {
+      it(`gets the buy in`, () => {
+        const result = getTotalBuyIn(mockHandHistory1Converted)
+        expect(result).toEqual(5)
+      })
     })
   })
 })
