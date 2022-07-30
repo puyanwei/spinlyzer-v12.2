@@ -33,6 +33,10 @@ describe(`handhistoryParser.ts`, () => {
       const result = getTournamentNumber(mockHandHistory1Converted);
       expect(result).toEqual(3205974213);
     });
+    it(`returns null if it does not find a word with a hashtag in it`, () => {
+      const result = getTournamentNumber(["hello", "world"]);
+      expect(result).toEqual(null);
+    });
   });
 
   describe(`getBuyIn()`, () => {

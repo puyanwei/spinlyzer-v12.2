@@ -42,7 +42,7 @@ export function handHistoryParser(data: string): Statistics {
 
   return {
     tournamentNumber,
-    //     buyIn,
+    buyIn,
     //     rake,
     //     totalBuyIn,
     //     numberOfPlayers,
@@ -68,10 +68,10 @@ export function putIntoArrayAndRemoveNewLines(data: string): string[] {
   return arrayOfWords;
 }
 
-export function getTournamentNumber(data: string[]): number {
+export function getTournamentNumber(data: string[]): number | null {
   const arrayOfHashedWords = data.find((word) => word.startsWith("#"));
   if (!arrayOfHashedWords)
-    throw new Error("No words starting with hashtags found");
+    return returnNullAndWarn("No words starting with hashtags found");
   const tournamentNumber = arrayOfHashedWords?.substring(1) as string;
   return parseInt(tournamentNumber);
 }
