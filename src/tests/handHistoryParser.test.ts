@@ -1,5 +1,6 @@
 import {
   getBuyIn,
+  getTotalBuyIn,
   getTournamentNumber,
   putIntoArrayAndRemoveNewLines,
 } from "../server/router/handHistoryParser";
@@ -39,10 +40,15 @@ describe(`handhistoryParser.ts`, () => {
     });
   });
 
-  describe(`getBuyIn()`, () => {
+  describe(`getTotalBuyIn()`, () => {
     it(`gets the buy in`, () => {
-      const result = getBuyIn(mockHandHistory1Converted);
+      const result = getTotalBuyIn(mockHandHistory1Converted);
       expect(result).toEqual(5);
+    });
+    it(`returns null if data does not contain both the rake and the buy in fee`, () => {
+      const data = [`Hold'emBuy-In:`, `$4.65/`];
+      const result = getTotalBuyIn(data);
+      expect(result).toEqual(null);
     });
   });
 });

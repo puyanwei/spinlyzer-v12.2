@@ -1,31 +1,32 @@
+import { parse } from "path";
 import { findWord, returnNullAndWarn } from "../../utils/helpers";
 
 interface Statistics {
-  tournamentNumber: number;
-  buyIn: number;
-  rake: number;
-  totalBuyIn: number;
-  numberOfPlayers: number;
-  prizePool: number;
-  currency: string;
-  dateStarted: Date;
-  timeStarted: Date;
-  timeRegion: string;
-  first: number;
-  firstCountry: string;
-  second: number;
-  secondCountry: string;
-  third: number;
-  thirdCountry: string;
-  result: string;
+  tournamentNumber?: number;
+  buyIn?: number;
+  rake?: number;
+  totalBuyIn?: number;
+  numberOfPlayers?: number;
+  prizePool?: number;
+  currency?: string;
+  dateStarted?: Date;
+  timeStarted?: Date;
+  timeRegion?: string;
+  first?: number;
+  firstCountry?: string;
+  second?: number;
+  secondCountry?: string;
+  third?: number;
+  thirdCountry?: string;
+  result?: string;
 }
 
 export function handHistoryParser(data: string): Statistics {
   const preparedHandHistory = putIntoArrayAndRemoveNewLines(data);
   const tournamentNumber = getTournamentNumber(preparedHandHistory);
-  const buyIn = getBuyIn(preparedHandHistory);
+  // const buyIn = getBuyIn(preparedHandHistory);
   //   const rake = getRake(preparedHandHistory);
-  //   const totalBuyIn = getTotalBuyIn(preparedHandHistory);
+  const totalBuyIn = getTotalBuyIn(preparedHandHistory);
   //   const numberOfPlayers = getNumberOfPlayers(preparedHandHistory);
   //   const prizePool = getPrizePool(preparedHandHistory);
   //   const currency = getCurrency(preparedHandHistory);
@@ -42,9 +43,9 @@ export function handHistoryParser(data: string): Statistics {
 
   return {
     tournamentNumber,
-    buyIn,
     //     rake,
-    //     totalBuyIn,
+    // buyIn,
+    totalBuyIn,
     //     numberOfPlayers,
     //     prizePool,
     //     currency,
@@ -76,12 +77,25 @@ export function getTournamentNumber(data: string[]): number | null {
   return parseInt(tournamentNumber);
 }
 
-export function getBuyIn(data: string[]): number | null {
+export function getTotalBuyIn(data: string[]): number | null {
   const word = findWord(data, `Hold'emBuy-In:`, 1);
+  const hasForwardSlash = word?.includes("/");
+  if (!hasForwardSlash) return returnNullAndWarn(`has no slash to split`);
   const buyInAndRakeTuple = word?.split("/");
-  const parsedToNumbersTuple = buyInAndRakeTuple?.map((price) =>
-    price.startsWith("$") ? parseFloat(price.substring(1)) : parseFloat(price),
+
+  if (buyInAndRakeTuple?.length !== 2)
+    return returnNullAndWarn(`split array does not have 2 elements`);
+
+  const removedDollarSymbolTuple = buyInAndRakeTuple?.map((price) =>
+    price.startsWith("$") ? price.substring(1) : price,
   );
+  const parsedToNumbersTuple = removedDollarSymbolTuple.map((price) =>
+    parseFloat(price),
+  );
+
+  if (parsedToNumbersTuple.some((price) => Number.isNaN(price)))
+    return returnNullAndWarn(`unable to parse split elements`);
+
   if (!parsedToNumbersTuple || !parsedToNumbersTuple.length)
     return returnNullAndWarn(`Tuple is falsey`);
   const buyIn = parsedToNumbersTuple[0]! + parsedToNumbersTuple[1]!;
