@@ -1,3 +1,5 @@
+import { findWord, returnNullAndWarn } from "../../utils/helpers";
+
 interface Statistics {
   tournamentNumber: number;
   buyIn: number;
@@ -74,8 +76,14 @@ export function getTournamentNumber(data: string[]): number {
   return parseInt(tournamentNumber);
 }
 
-export function getBuyIn(data: string[]): number {
-  const arrayOfHashedWords = data.indexOf(`Hold'emBuy-In:`);
-
-  return arrayOfHashedWords;
+export function getBuyIn(data: string[]): number | null {
+  const word = findWord(data, `Hold'emBuy-In:`, 1);
+  const buyInAndRakeTuple = word?.split("/");
+  const parsedToNumbersTuple = buyInAndRakeTuple?.map((price) =>
+    price.startsWith("$") ? parseFloat(price.substring(1)) : parseFloat(price),
+  );
+  if (!parsedToNumbersTuple || !parsedToNumbersTuple.length)
+    return returnNullAndWarn(`Tuple is falsey`);
+  const buyIn = parsedToNumbersTuple[0]! + parsedToNumbersTuple[1]!;
+  return buyIn;
 }

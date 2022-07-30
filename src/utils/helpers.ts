@@ -25,16 +25,29 @@ export function findWord(
   startingWord: string,
   elementMovement: number = 0,
 ) {
-  if (array.length === 0 || !startingWord) return null;
+  if (array.length === 0)
+    return returnNullAndWarn(`Data array is empty`, array);
+  if (!startingWord)
+    return returnNullAndWarn(`No starting word selected`, array);
 
   const wordIndex = array?.indexOf(startingWord);
   const noMatchingWordFound = wordIndex === -1;
-  if (noMatchingWordFound) throw new Error(`No word found`);
+  if (noMatchingWordFound) returnNullAndWarn(`No word found`, array);
 
   const finalIndex = wordIndex + elementMovement;
-  if (finalIndex < 0) throw new Error(`Element movement parameter too low`);
+  if (finalIndex < 0)
+    return returnNullAndWarn(`Element movement parameter too low`, array);
   if (finalIndex > array.length)
-    throw new Error(`Element movement parameter too high`);
+    return returnNullAndWarn(`Element movement parameter too high`, array);
 
   return array[finalIndex];
+}
+
+export function returnNullAndWarn(
+  message: string,
+  data: string[] = [""],
+): null {
+  if (!message) throw new Error(`Message not found`);
+  console.warn(message, data);
+  return null;
 }

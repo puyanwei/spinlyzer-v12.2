@@ -1,5 +1,5 @@
 import { mockHandHistory1Converted } from "./mocks/handHistoryParserMocks";
-import { countHashKeys, findWord } from "../utils/helpers";
+import { countHashKeys, findWord, returnNullAndWarn } from "../utils/helpers";
 
 describe(`utils.ts`, () => {
   describe(`countHashKeys()`, () => {
@@ -62,38 +62,39 @@ describe(`utils.ts`, () => {
       const result = findWord(mockHandHistory1Converted, "Tournament", -1);
       expect(result).toEqual("PokerStars");
     });
-    it("throws an error if no matching word is found", () => {
-      expect.assertions(2);
-      try {
-        findWord(mockHandHistory1Converted, "Pokemon");
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error);
-        expect(error).toHaveProperty("message", "No word found");
-      }
+    it("returns null if no matching word is found", () => {
+      const result = findWord(mockHandHistory1Converted, "Pokemon");
+      expect(result).toEqual(null);
     });
-    it("throws an error if final index is a negative number", () => {
-      expect.assertions(2);
-      try {
-        findWord(mockHandHistory1Converted, "PokerStars", -8);
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error);
-        expect(error).toHaveProperty(
-          "message",
-          "Element movement parameter too low",
-        );
-      }
+    it("returns null if final index is a negative number", () => {
+      const result = findWord(mockHandHistory1Converted, "PokerStars", -8);
+      expect(result).toEqual(null);
+    });
+    it("returns null if final index is a higher then the total length of the array", () => {
+      const result = findWord(
+        ["hello", "world", "this", "is", "a", "test"],
+        "hello",
+        7,
+      );
+      expect(result).toEqual(null);
     });
   });
-  it("throws an error if final index is a higher then the total length of the array", () => {
-    expect.assertions(2);
-    try {
-      findWord(["hello", "world", "this", "is", "a", "test"], "hello", 8);
-    } catch (error) {
-      expect(error).toBeInstanceOf(Error);
-      expect(error).toHaveProperty(
-        "message",
-        "Element movement parameter too high",
-      );
-    }
+
+  describe("returnNullAndWarn()", () => {
+    it("should return null and log a warning message in the console", () => {
+      const data = ["hello", "world", "this", "is", "a", "test"];
+
+      const consoleSpy = jest.spyOn(console, "warn");
+      const result = returnNullAndWarn("This is a warning", data);
+      expect(consoleSpy).toHaveBeenCalledWith("This is a warning", [
+        "hello",
+        "world",
+        "this",
+        "is",
+        "a",
+        "test",
+      ]);
+      expect(result).toEqual(null);
+    });
   });
 });

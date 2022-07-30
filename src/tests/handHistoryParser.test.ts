@@ -1,4 +1,5 @@
 import {
+  getBuyIn,
   getTournamentNumber,
   putIntoArrayAndRemoveNewLines,
 } from "../server/router/handHistoryParser";
@@ -31,6 +32,13 @@ describe(`handhistoryParser.ts`, () => {
     it(`gets the tournament number`, () => {
       const result = getTournamentNumber(mockHandHistory1Converted);
       expect(result).toEqual(3205974213);
+    });
+  });
+
+  describe(`getBuyIn()`, () => {
+    it(`gets the buy in`, () => {
+      const result = getBuyIn(mockHandHistory1Converted);
+      expect(result).toEqual(5);
     });
   });
 });
