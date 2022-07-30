@@ -1,5 +1,6 @@
 import {
   getBuyIn,
+  getNumberOfPlayers,
   getRake,
   getTotalBuyIn,
   getTournamentNumber,
@@ -53,26 +54,33 @@ describe(`handhistoryParser.ts`, () => {
       const anotherResult = resolveTotalBuyIn(["Hold'emBuy-In:", "/$0.35"])
       expect(anotherResult).toEqual(null)
     })
+  })
 
-    describe(`getBuyIn()`, () => {
-      it(`gets the take`, () => {
-        const result = getBuyIn(mockHandHistory1Converted)
-        expect(result).toEqual(4.65)
-      })
+  describe(`getBuyIn()`, () => {
+    it(`gets the take`, () => {
+      const result = getBuyIn(mockHandHistory1Converted)
+      expect(result).toEqual(4.65)
     })
+  })
 
-    describe(`getRake()`, () => {
-      it(`gets the take`, () => {
-        const result = getRake(mockHandHistory1Converted)
-        expect(result).toEqual(0.35)
-      })
+  describe(`getRake()`, () => {
+    it(`gets the take`, () => {
+      const result = getRake(mockHandHistory1Converted)
+      expect(result).toEqual(0.35)
     })
+  })
 
-    describe(`getTotalBuyIn()`, () => {
-      it(`gets the buy in`, () => {
-        const result = getTotalBuyIn(mockHandHistory1Converted)
-        expect(result).toEqual(5)
-      })
+  describe(`getTotalBuyIn()`, () => {
+    it(`gets the buy in`, () => {
+      const result = getTotalBuyIn(mockHandHistory1Converted)
+      expect(result).toEqual(5)
+    })
+  })
+
+  describe(`getNumberOfPlayers()`, () => {
+    it(`gets the total number of tournament players`, () => {
+      const result = getNumberOfPlayers(mockHandHistory1Converted)
+      expect(result).toEqual(3)
     })
   })
 })

@@ -1,30 +1,31 @@
+import { number } from "zod"
 import { findWord, returnNullAndWarn } from "../../utils/helpers"
 
 interface Statistics {
-  tournamentNumber?: number
-  buyIn?: number
-  rake?: number
-  totalBuyIn?: number
-  numberOfPlayers?: number
-  prizePool?: number
-  currency?: string
-  dateStarted?: Date
-  timeStarted?: Date
-  timeRegion?: string
-  first?: number
-  firstCountry?: string
-  second?: number
-  secondCountry?: string
-  third?: number
-  thirdCountry?: string
-  result?: string
+  tournamentNumber: number | null
+  buyIn: number | null
+  rake: number | null
+  totalBuyIn: number | null
+  numberOfPlayers: number | null
+  prizePool: number | null
+  currency: string | null
+  dateStarted: Date | null
+  timeStarted: Date | null
+  timeRegion: string | null
+  first: number | null
+  firstCountry: string | null
+  second: number | null
+  secondCountry: string | null
+  third: number | null
+  thirdCountry: string | null
+  result: string | null
 }
 
 export function handHistoryParser(data: string): Statistics {
   const preparedHandHistory = putIntoArrayAndRemoveNewLines(data)
   const tournamentNumber = getTournamentNumber(preparedHandHistory)
-  // const buyIn = getBuyIn(preparedHandHistory)
-  //   const rake = getRake(preparedHandHistory)
+  const buyIn = getBuyIn(preparedHandHistory)
+  const rake = getRake(preparedHandHistory)
   const totalBuyIn = getTotalBuyIn(preparedHandHistory)
   //   const numberOfPlayers = getNumberOfPlayers(preparedHandHistory)
   //   const prizePool = getPrizePool(preparedHandHistory)
@@ -45,7 +46,7 @@ export function handHistoryParser(data: string): Statistics {
     rake,
     buyIn,
     totalBuyIn,
-    //     numberOfPlayers,
+    numberOfPlayers,
     //     prizePool,
     //     currency,
     //     dateStarted,
@@ -120,4 +121,22 @@ export function resolveTotalBuyIn(data: string[]): number[] | null {
     return returnNullAndWarn(`Tuple is falsey`)
 
   return parsedToNumbersTuple
+}
+
+export function getNumberOfPlayers(data: string[]): number | null {
+  const word = findWord(data, "playersTotal", -1)
+  const hasUSD = word?.includes("USD")
+  if (!hasUSD)
+    return returnNullAndWarn(
+      `does not have USD word to use to find number of players`,
+    )
+  const numberOfPlayers = word?.split("USD")
+  if (numberOfPlayers?.length !== 2)
+    return returnNullAndWarn(`split array does not have 2 elements`)
+
+  const finalNumberOfPlayers = parseInt(numberOfPlayers[1]!)
+  if (Number.isNaN(finalNumberOfPlayers))
+    return returnNullAndWarn(`parsed string did not resolve to a number`)
+
+  return finalNumberOfPlayers
 }
