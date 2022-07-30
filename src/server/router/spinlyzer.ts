@@ -1,11 +1,11 @@
-import { createRouter } from "./context";
-import { z } from "zod";
-import { prisma } from "../db/client";
+import { createRouter } from "./context"
+import { z } from "zod"
+import { prisma } from "../db/client"
 
 export const spinlyzerRouter = createRouter()
   .query("getAll", {
     async resolve() {
-      return await prisma.example.findMany();
+      return await prisma.example.findMany()
     },
   })
   .mutation("create", {
@@ -19,7 +19,7 @@ export const spinlyzerRouter = createRouter()
           firstName: input.firstName,
           surname: input.surname,
         },
-      });
-      return data;
+      })
+      return data
     },
-  });
+  })

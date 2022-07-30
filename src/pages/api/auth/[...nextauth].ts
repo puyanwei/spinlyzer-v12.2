@@ -1,10 +1,10 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth';
-import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import NextAuth, { type NextAuthOptions } from "next-auth"
+import GoogleProvider from "next-auth/providers/google"
+import CredentialsProvider from "next-auth/providers/credentials"
 
 // Prisma adapter for NextAuth, optional and can be removed
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { prisma } from '../../../server/db/client';
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { prisma } from "../../../server/db/client"
 
 export const authOptions: NextAuthOptions = {
   // Configure one or more authentication providers
@@ -16,6 +16,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   secret: process.env.SECRET,
-};
+}
 
-export default NextAuth(authOptions);
+export default NextAuth(authOptions)

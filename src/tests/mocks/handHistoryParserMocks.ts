@@ -8,7 +8,7 @@ Tournament started 2021/06/02 10:25:45 WET [2021/06/02 5:25:45 ET]
   2: bubonik90 (Russia), 
   3: Lesnik995 (Russia), 
 
-You finished in 1st place (eliminated at hand #227262227725).`;
+You finished in 1st place (eliminated at hand #227262227725).`
 
 export const mockHandHistory2 = `PokerStars Tournament #3205978211, No Limit Hold'em
 Buy-In: $4.65/$0.35 USD
@@ -21,7 +21,7 @@ Tournament started 2021/06/02 10:39:04 WET [2021/06/02 5:39:04 ET]
   3: TotalBeton (Lithuania), 
 
 You finished in 1st place (eliminated at hand #227262421473).
-`;
+`
 
 export const mockHandHistory1Converted = [
   "PokerStars",
@@ -70,4 +70,4 @@ export const mockHandHistory1Converted = [
   "at",
   "hand",
   "#227262227725).",
-];
+]

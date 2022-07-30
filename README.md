@@ -4,7 +4,7 @@ This app allows Pokerstars Spin and Go players to upload their hand histories an
 
 ### Tech Stack
 
-This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack which is;
+This is an app bootstrapped according to the [init.tips](https://init.tips) stack, also known as the T3-Stack which is
 
 - React
 - Next.js
