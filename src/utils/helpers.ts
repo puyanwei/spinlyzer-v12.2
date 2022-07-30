@@ -24,7 +24,7 @@ export function findWord(
   array: string[],
   startingWord: string,
   elementMovement: number = 0,
-) {
+): string | null {
   if (array.length === 0) return returnNullAndWarn(`Data array is empty`, array)
   if (!startingWord)
     return returnNullAndWarn(`No starting word selected`, array)
@@ -39,7 +39,28 @@ export function findWord(
   if (finalIndex > array.length)
     return returnNullAndWarn(`Element movement parameter too high`, array)
 
-  return array[finalIndex]
+  return array[finalIndex]!
+}
+
+export function findCountries(data: string): string[] | null {
+  const array = data.split("),")
+  const firstCountrySplitByBracket = array[0]?.split("(")
+
+  const firstCountry =
+    firstCountrySplitByBracket?.[firstCountrySplitByBracket.length - 1]
+  if (!firstCountry) return null
+
+  const secondCountrySplitByBracket = array[1]?.split("(")
+  const secondCountry =
+    secondCountrySplitByBracket?.[secondCountrySplitByBracket.length - 1]
+  if (!secondCountry) return null
+
+  const thirdCountrySplitByBracket = array[1]?.split("(")
+  const thirdCountry =
+    thirdCountrySplitByBracket?.[thirdCountrySplitByBracket.length - 1]
+  if (!thirdCountry) return null
+
+  return [firstCountry, secondCountry, thirdCountry]
 }
 
 export function returnNullAndWarn(

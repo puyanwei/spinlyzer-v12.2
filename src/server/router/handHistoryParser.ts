@@ -1,5 +1,4 @@
-import { number } from "zod"
-import { findWord, returnNullAndWarn } from "../../utils/helpers"
+import { findCountries, findWord, returnNullAndWarn } from "../../utils/helpers"
 
 interface Statistics {
   tournamentNumber: number | null
@@ -9,16 +8,13 @@ interface Statistics {
   numberOfPlayers: number | null
   prizePool: number | null
   currency: string | null
-  dateStarted: Date | null
-  timeStarted: Date | null
-  timeRegion: string | null
-  first: number | null
-  firstCountry: string | null
-  second: number | null
-  secondCountry: string | null
-  third: number | null
-  thirdCountry: string | null
-  result: string | null
+  dateStartedEasternTime: string | null
+  firstPlace: string | null
+  secondPlace: string | null
+  thirdPlace: string | null
+  firstPlaceCountry: string | null
+  secondPlaceCountry: string | null
+  thirdPlaceCountry: string | null
 }
 
 export function handHistoryParser(data: string): Statistics {
@@ -27,39 +23,34 @@ export function handHistoryParser(data: string): Statistics {
   const buyIn = getBuyIn(preparedHandHistory)
   const rake = getRake(preparedHandHistory)
   const totalBuyIn = getTotalBuyIn(preparedHandHistory)
-  //   const numberOfPlayers = getNumberOfPlayers(preparedHandHistory)
-  //   const prizePool = getPrizePool(preparedHandHistory)
-  //   const currency = getCurrency(preparedHandHistory)
-  //   const dateStarted = getDateStarted(preparedHandHistory)
-  //   const timeStarted = getTimeStarted(preparedHandHistory)
-  //   const timeRegion = getTimeRegion(preparedHandHistory)
-  //   const first = getFirst(preparedHandHistory)
-  //   const firstCountry = getFirstCountry(preparedHandHistory)
-  //   const second = getSecond(preparedHandHistory)
-  //   const secondCountry = getSecondCountry(preparedHandHistory)
-  //   const third = getThird(preparedHandHistory)
-  //   const thirdCountry = getThirdCountry(preparedHandHistory)
-  //   const result = getResult(preparedHandHistory)
+  const numberOfPlayers = getNumberOfPlayers(preparedHandHistory)
+  const prizePool = getPrizepool(preparedHandHistory)
+  const currency = getCurrency(preparedHandHistory)
+  const dateStartedEasternTime = getDateStartedEasternTime(preparedHandHistory)
+  const firstPlace = getFirstPlace(preparedHandHistory)
+  const secondPlace = getSecondPlace(preparedHandHistory)
+  const thirdPlace = getThirdPlace(preparedHandHistory)
+  const firstPlaceCountry = getFirstPlaceCountry(data)
+  const secondPlaceCountry = getSecondPlaceCountry(data)
+  const thirdPlaceCountry = getThirdPlaceCountry(data)
 
-  return {
+  const statistics: Statistics = {
     tournamentNumber,
     rake,
     buyIn,
     totalBuyIn,
     numberOfPlayers,
-    //     prizePool,
-    //     currency,
-    //     dateStarted,
-    //     timeStarted,
-    //     timeRegion,
-    //     first,
-    //     firstCountry,
-    //     second,
-    //     secondCountry,
-    //     third,
-    //     thirdCountry,
-    //     result,
+    prizePool,
+    currency,
+    dateStartedEasternTime,
+    firstPlace,
+    secondPlace,
+    thirdPlace,
+    firstPlaceCountry,
+    secondPlaceCountry,
+    thirdPlaceCountry,
   }
+  return statistics
 }
 
 export function putIntoArrayAndRemoveNewLines(data: string): string[] {
@@ -72,14 +63,14 @@ export function putIntoArrayAndRemoveNewLines(data: string): string[] {
 export function getTournamentNumber(data: string[]): number | null {
   const arrayOfHashedWords = data.find((word) => word.startsWith("#"))
   if (!arrayOfHashedWords)
-    return returnNullAndWarn("No words starting with hashtags found")
+    return returnNullAndWarn("No words starting with hashtags found", data)
   const tournamentNumber = arrayOfHashedWords?.substring(1) as string
   return parseInt(tournamentNumber)
 }
 
 export function getTotalBuyIn(data: string[]): number | null {
-  if (!getRake(data)) return returnNullAndWarn(`rake parsing error`)
-  if (!getBuyIn(data)) return returnNullAndWarn(`buy in parsing error`)
+  if (!getRake(data)) return returnNullAndWarn(`rake parsing error`, data)
+  if (!getBuyIn(data)) return returnNullAndWarn(`buy in parsing error`, data)
   const totalBuyIn = getRake(data)! + getBuyIn(data)!
   return totalBuyIn
 }
@@ -101,11 +92,11 @@ export function getBuyIn(data: string[]): number | null {
 export function resolveTotalBuyIn(data: string[]): number[] | null {
   const word = findWord(data, `Hold'emBuy-In:`, 1)
   const hasForwardSlash = word?.includes("/")
-  if (!hasForwardSlash) return returnNullAndWarn(`has no slash to split`)
+  if (!hasForwardSlash) return returnNullAndWarn(`has no slash to split`, data)
   const buyInAndRakeTuple = word?.split("/")
 
   if (buyInAndRakeTuple?.length !== 2)
-    return returnNullAndWarn(`split array does not have 2 elements`)
+    return returnNullAndWarn(`split array does not have 2 elements`, data)
 
   const removedDollarSymbolTuple = buyInAndRakeTuple?.map((price) =>
     price.startsWith("$") ? price.substring(1) : price,
@@ -115,10 +106,10 @@ export function resolveTotalBuyIn(data: string[]): number[] | null {
   )
 
   if (parsedToNumbersTuple.some((price) => Number.isNaN(price)))
-    return returnNullAndWarn(`unable to parse split elements`)
+    return returnNullAndWarn(`unable to parse split elements`, data)
 
   if (!parsedToNumbersTuple || !parsedToNumbersTuple.length)
-    return returnNullAndWarn(`Tuple is falsey`)
+    return returnNullAndWarn(`Tuple is falsey`, data)
 
   return parsedToNumbersTuple
 }
@@ -129,14 +120,73 @@ export function getNumberOfPlayers(data: string[]): number | null {
   if (!hasUSD)
     return returnNullAndWarn(
       `does not have USD word to use to find number of players`,
+      data,
     )
   const numberOfPlayers = word?.split("USD")
   if (numberOfPlayers?.length !== 2)
-    return returnNullAndWarn(`split array does not have 2 elements`)
+    return returnNullAndWarn(`split array does not have 2 elements`, data)
 
   const finalNumberOfPlayers = parseInt(numberOfPlayers[1]!)
   if (Number.isNaN(finalNumberOfPlayers))
-    return returnNullAndWarn(`parsed string did not resolve to a number`)
+    return returnNullAndWarn(`parsed string did not resolve to a number`, data)
 
   return finalNumberOfPlayers
+}
+
+export function getPrizepool(data: string[]): number | null {
+  const word = findWord(data, `Pool:`, 1)
+  if (!word?.startsWith("$"))
+    return returnNullAndWarn(`word does not have $ sign`, data)
+  const prizepool = parseFloat(word?.substring(1))
+  if (Number.isNaN(prizepool))
+    return returnNullAndWarn(`unable to parse from string to number`, data)
+  return prizepool
+}
+
+export function getCurrency(data: string[]): string | null {
+  const word = findWord(data, `Pool:`, 2)
+  if (!word?.includes("USD"))
+    return returnNullAndWarn(`does not find a currency`, data)
+  return word
+}
+
+export function getDateStartedEasternTime(data: string[]): string | null {
+  const date = findWord(data, `started`, 4)
+  const time = findWord(data, `started`, 5)
+  if (findWord(data, `started`, 6) !== "ET]")
+    return returnNullAndWarn(`array string with ET not found`, data)
+  if (!date?.startsWith("["))
+    return returnNullAndWarn(`word does not have [ sign`, data)
+  const resolvedDate = date.substring(1)
+  const dateAndTime = `${resolvedDate} ${time}`
+  return dateAndTime
+}
+
+export function getFirstPlace(data: string[]): string | null {
+  const word = findWord(data, `1:`, 1)
+  return word
+}
+export function getSecondPlace(data: string[]): string | null {
+  const word = findWord(data, `2:`, 1)
+  return word
+}
+export function getThirdPlace(data: string[]): string | null {
+  const word = findWord(data, `3:`, 1)
+  return word
+}
+
+export function getFirstPlaceCountry(data: string): string | null {
+  const countries = findCountries(data)
+  if (!countries?.length) return returnNullAndWarn(`country parsing failed`)
+  return countries[0]!
+}
+export function getSecondPlaceCountry(data: string): string | null {
+  const countries = findCountries(data)
+  if (!countries?.length) return returnNullAndWarn(`country parsing failed`)
+  return countries[1]!
+}
+export function getThirdPlaceCountry(data: string): string | null {
+  const countries = findCountries(data)
+  if (!countries?.length) return returnNullAndWarn(`country parsing failed`)
+  return countries[2]!
 }
