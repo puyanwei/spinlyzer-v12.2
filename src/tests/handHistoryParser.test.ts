@@ -1,18 +1,68 @@
 import {
   getBuyIn,
+  getCurrency,
+  getDateStartedEasternTime,
+  getFirstPlace,
+  getFirstPlaceCountry,
   getNumberOfPlayers,
+  getPrizepool,
   getRake,
+  getSecondPlace,
+  getSecondPlaceCountry,
+  getThirdPlace,
+  getThirdPlaceCountry,
   getTotalBuyIn,
   getTournamentNumber,
+  handHistoryParser,
   putIntoArrayAndRemoveNewLines,
   resolveTotalBuyIn,
 } from "../server/router/handHistoryParser"
 import {
   mockHandHistory1Converted,
   mockHandHistory1,
+  mockHandHistory2,
 } from "./mocks/handHistoryParserMocks"
 
 describe(`handhistoryParser.ts`, () => {
+  it("parses a hand history and returns the data in a statistics object", () => {
+    const statistics = {
+      buyIn: 4.65,
+      currency: "USD",
+      dateStartedEasternTime: "2021/06/02 5:25:45",
+      firstPlace: "puyan",
+      firstPlaceCountry: "United Kingdom",
+      numberOfPlayers: 3,
+      prizePool: 10,
+      rake: 0.35,
+      secondPlace: "bubonik90",
+      secondPlaceCountry: "Russia",
+      thirdPlace: "Lesnik995",
+      thirdPlaceCountry: "Russia",
+      totalBuyIn: 5,
+      tournamentNumber: 3205974213,
+    }
+    expect(handHistoryParser(mockHandHistory1)).toEqual(statistics)
+  })
+  it("parses another hand history and returns the data in a statistics object", () => {
+    const statistics = {
+      buyIn: 4.65,
+      currency: "USD",
+      dateStartedEasternTime: "2021/06/02 5:39:04",
+      firstPlace: "puyan",
+      firstPlaceCountry: "United Kingdom",
+      numberOfPlayers: 3,
+      prizePool: 15,
+      rake: 0.35,
+      secondPlace: "nixON232",
+      secondPlaceCountry: "Belarus",
+      thirdPlace: "TotalBeton",
+      thirdPlaceCountry: "Belarus",
+      totalBuyIn: 5,
+      tournamentNumber: 3205978211,
+    }
+    expect(handHistoryParser(mockHandHistory2)).toEqual(statistics)
+  })
+
   describe(`putIntoArrayAndRemoveNewLines()`, () => {
     it(`throws an error if the data is empty`, () => {
       expect.assertions(2)
@@ -81,6 +131,60 @@ describe(`handhistoryParser.ts`, () => {
     it(`gets the total number of tournament players`, () => {
       const result = getNumberOfPlayers(mockHandHistory1Converted)
       expect(result).toEqual(3)
+    })
+  })
+  describe(`getPrizepool()`, () => {
+    it(`gets the prize pool`, () => {
+      const result = getPrizepool(mockHandHistory1Converted)
+      expect(result).toEqual(10)
+    })
+  })
+  describe(`getCurrency()`, () => {
+    it(`gets the currency`, () => {
+      const result = getCurrency(mockHandHistory1Converted)
+      expect(result).toEqual("USD")
+    })
+  })
+  describe(`getDateStarted()`, () => {
+    it(`gets the date and time the tournament started`, () => {
+      const result = getDateStartedEasternTime(mockHandHistory1Converted)
+      expect(result).toEqual("2021/06/02 5:25:45")
+    })
+  })
+  describe(`getFirstPlace()`, () => {
+    it(`gets the username of first place`, () => {
+      const result = getFirstPlace(mockHandHistory1Converted)
+      expect(result).toEqual("puyan")
+    })
+  })
+  describe(`getSecondPlace()`, () => {
+    it(`gets the username of second place`, () => {
+      const result = getSecondPlace(mockHandHistory1Converted)
+      expect(result).toEqual("bubonik90")
+    })
+  })
+  describe(`getThirdPlace()`, () => {
+    it(`gets the username of third place`, () => {
+      const result = getThirdPlace(mockHandHistory1Converted)
+      expect(result).toEqual("Lesnik995")
+    })
+  })
+  describe(`getFirstPlaceCountry()`, () => {
+    it(`gets the country of first place`, () => {
+      const result = getFirstPlaceCountry(mockHandHistory1)
+      expect(result).toEqual("United Kingdom")
+    })
+  })
+  describe(`getSecondPlaceCountry()`, () => {
+    it(`gets the country of first place`, () => {
+      const result = getSecondPlaceCountry(mockHandHistory1)
+      expect(result).toEqual("Russia")
+    })
+  })
+  describe(`getThirdPlaceCountry()`, () => {
+    it(`gets the country of first place`, () => {
+      const result = getThirdPlaceCountry(mockHandHistory1)
+      expect(result).toEqual("Russia")
     })
   })
 })
