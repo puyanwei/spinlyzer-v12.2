@@ -1,29 +1,49 @@
 import React from "react"
 import Link from "next/link"
+import { UploadIcon } from "../Icons/UploadIcon"
+import { PieChartIcon } from "../Icons/PieChartIcon"
+import { CalendarIcon } from "../Icons/CalendarIcon"
+import { GearIcon } from "../Icons/GearIcon"
+import { LogoutIcon } from "../Icons/LogoutIcon"
 
 export default function SideMenu() {
   return (
-    <nav className="bg-[#1E1F25] max-w-[200px] font-semibold">
-      <div className="p-8 text-lg">Spinlyzer</div>
-      <div className="flex flex-col justify-between h-[90vh]">
-        <div className="flex flex-col px-4">
-          <Link href="/">
-            <a className="p-2">Analysis</a>
-          </Link>
-          <Link href="/upload">
-            <a className="p-2">Upload</a>
-          </Link>
-          <Link href="/history">
-            <a className="p-2">History</a>
-          </Link>
+    <nav className="bg-[#1E1F25] max-w-[280px] font-semibold">
+      <div className="flex flex-col justify-between h-screen p-12">
+        <div className="flex flex-col">
+          <div className="pb-8 text-xl">Spinlyzer</div>
+          <span className="flex items-center py-4">
+            <PieChartIcon />
+            <Link href="/">
+              <a className="ml-4">Analysis</a>
+            </Link>
+          </span>
+          <span className="flex items-center py-4">
+            <UploadIcon />
+            <Link href="/upload">
+              <a className="ml-4">Upload</a>
+            </Link>
+          </span>
+          <span className="flex items-center py-4">
+            <CalendarIcon />
+            <Link href="/history">
+              <a className="ml-4">History</a>
+            </Link>
+          </span>
         </div>
-        <div className="flex flex-col p-4">
-          <Link href="/settings">
-            <a className="p-2">Settings</a>
-          </Link>
-          <Link href="/api/auth/signout">
-            <a className="p-2">Sign Out</a>
-          </Link>
+        <div className="flex flex-col">
+          <span className="flex items-center py-4">
+            <GearIcon />
+            <Link href="/settings">
+              <a className="ml-4">Settings</a>
+            </Link>
+          </span>
+          <span className="flex items-center py-4">
+            <LogoutIcon />
+            <Link href="/api/auth/signout">
+              <a className="ml-4">Sign Out</a>
+            </Link>
+          </span>
         </div>
       </div>
     </nav>
