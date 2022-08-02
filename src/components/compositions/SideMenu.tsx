@@ -1,35 +1,31 @@
 import React from "react"
 import Link from "next/link"
-import { Component } from "../../types"
 
-interface Props extends Component {}
-
-export default function SideMenu({ children }: Props) {
+export default function SideMenu() {
   return (
-    <>
-      <nav className="bg-[#1E1F25] grid col-span-2 p-8 content-between">
-        <div className="flex flex-col">
-          <div className="text-white">Spinlyzer</div>
+    <nav className="bg-[#1E1F25] max-w-[200px] font-semibold">
+      <div className="p-8 text-lg">Spinlyzer</div>
+      <div className="flex flex-col justify-between h-[90vh]">
+        <div className="flex flex-col px-4">
           <Link href="/">
-            <a className="text-blue-400">Analysis</a>
+            <a className="p-2">Analysis</a>
           </Link>
           <Link href="/upload">
-            <a className="text-blue-400">Upload</a>
+            <a className="p-2">Upload</a>
           </Link>
           <Link href="/history">
-            <a className="text-blue-400">History</a>
+            <a className="p-2">History</a>
           </Link>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col p-4">
           <Link href="/settings">
-            <a className="text-blue-400">Settings</a>
+            <a className="p-2">Settings</a>
           </Link>
           <Link href="/api/auth/signout">
-            <a className="text-blue-400">Sign Out</a>
+            <a className="p-2">Sign Out</a>
           </Link>
         </div>
-        {children}
-      </nav>
-    </>
+      </div>
+    </nav>
   )
 }
