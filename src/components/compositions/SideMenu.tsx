@@ -8,7 +8,7 @@ import { LogoutIcon } from "../Icons/LogoutIcon"
 
 export default function SideMenu() {
   return (
-    <nav className="bg-[#1E1F25] max-w-[280px] font-semibold">
+    <nav className="bg-[#1E1F25] font-semibold">
       <div className="flex flex-col justify-between h-screen p-12">
         <div className="flex flex-col">
           <div className="pb-8 text-xl">Spinlyzer</div>

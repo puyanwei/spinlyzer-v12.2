@@ -61,7 +61,7 @@ export default function UploadPage({ testId }: Props) {
       ...(isDragAccept ? acceptStyle : {}),
       ...(isDragReject ? rejectStyle : {}),
     }),
-    [isDragActive, isDragReject, isDragAccept],
+    [isDragActive, isDragReject, isDragAccept]
   )
 
   return (

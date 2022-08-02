@@ -13,7 +13,7 @@ const MyApp: AppType = ({
 }) => {
   return (
     <SessionProvider session={session}>
-      <div className="min-h-screen grid grid-cols-2 overflow-hidden bg-[#17181C] text-white">
+      <div className="min-h-screen grid grid-cols-[280px_1fr] overflow-hidden bg-[#17181C] text-white">
         <SideMenu />
         <Component {...pageProps} />
       </div>

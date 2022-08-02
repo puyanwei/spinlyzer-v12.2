@@ -2,15 +2,12 @@ import type { NextPage } from "next"
 import { useRouter } from "next/router"
 import Head from "next/head"
 import { useSession } from "next-auth/react"
-import { trpc } from "../utils/trpc"
-import Link from "next/link"
-import UploadPage from "./upload"
-import { useEffect } from "react"
-import SignIn from "./signIn"
+
+import AnalysisPage from "./analysis"
+import SignInPage from "./signIn"
 
 const HomePage: NextPage = () => {
   const { data: session } = useSession()
-  const router = useRouter()
 
   return (
     <div>
@@ -19,7 +16,7 @@ const HomePage: NextPage = () => {
         <meta name="description" content="Welcome to Spinlyzer" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {session ? <UploadPage /> : <SignIn />}
+      {session ? <AnalysisPage /> : <SignInPage />}
     </div>
   )
 }
