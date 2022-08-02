@@ -10,18 +10,18 @@ export default function SideMenu({ children }: Props) {
       <nav className="bg-[#1E1F25] grid col-span-2 p-8 content-between">
         <div className="flex flex-col">
           <div className="text-white">Spinlyzer</div>
-          <Link href="/api/auth/signout">
+          <Link href="/">
             <a className="text-blue-400">Analysis</a>
           </Link>
-          <Link href="/api/auth/signout">
+          <Link href="/upload">
             <a className="text-blue-400">Upload</a>
           </Link>
-          <Link href="/api/auth/signout">
+          <Link href="/history">
             <a className="text-blue-400">History</a>
           </Link>
         </div>
         <div className="flex flex-col">
-          <Link href="/api/auth/signout">
+          <Link href="/settings">
             <a className="text-blue-400">Settings</a>
           </Link>
           <Link href="/api/auth/signout">
