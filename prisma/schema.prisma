@@ -64,7 +64,7 @@ model VerificationToken {
 
 model Statistics {
     id String @id @default(auto()) @map("_id") @db.ObjectId
-    tournamentNumber Int 
+    tournamentNumber Int @unique
     buyIn Float 
     rake Float 
     totalBuyIn Int 
