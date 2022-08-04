@@ -61,3 +61,21 @@ model VerificationToken {
     token      String   @unique
     expires    DateTime
 }
+
+model Statistics {
+    id String @id @default(auto()) @map("_id") @db.ObjectId
+    tournamentNumber Int 
+    buyIn Float 
+    rake Float 
+    totalBuyIn Int 
+    numberOfPlayers Int 
+    prizePool Int 
+    currency String 
+    dateStartedEasternTime String 
+    firstPlace String 
+    secondPlace String 
+    thirdPlace String 
+    firstPlaceCountry String 
+    secondPlaceCountry String 
+    thirdPlaceCountry String 
+}

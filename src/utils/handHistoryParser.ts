@@ -1,4 +1,4 @@
-import { findCountries, findWord, returnNullAndWarn } from "../../utils/helpers"
+import { findCountries, findWord, returnNullAndWarn } from "./helpers"
 
 interface Statistics {
   tournamentNumber: number | null
@@ -61,7 +61,7 @@ export function putIntoArrayAndRemoveNewLines(data: string): string[] {
 }
 
 export function getTournamentNumber(data: string[]): number | null {
-  const arrayOfHashedWords = data.find((word) => word.startsWith("#"))
+  const arrayOfHashedWords = data.find(word => word.startsWith("#"))
   if (!arrayOfHashedWords)
     return returnNullAndWarn("No words starting with hashtags found", data)
   const tournamentNumber = arrayOfHashedWords?.substring(1) as string
@@ -98,14 +98,14 @@ export function resolveTotalBuyIn(data: string[]): number[] | null {
   if (buyInAndRakeTuple?.length !== 2)
     return returnNullAndWarn(`split array does not have 2 elements`, data)
 
-  const removedDollarSymbolTuple = buyInAndRakeTuple?.map((price) =>
-    price.startsWith("$") ? price.substring(1) : price,
+  const removedDollarSymbolTuple = buyInAndRakeTuple?.map(price =>
+    price.startsWith("$") ? price.substring(1) : price
   )
-  const parsedToNumbersTuple = removedDollarSymbolTuple.map((price) =>
-    parseFloat(price),
+  const parsedToNumbersTuple = removedDollarSymbolTuple.map(price =>
+    parseFloat(price)
   )
 
-  if (parsedToNumbersTuple.some((price) => Number.isNaN(price)))
+  if (parsedToNumbersTuple.some(price => Number.isNaN(price)))
     return returnNullAndWarn(`unable to parse split elements`, data)
 
   if (!parsedToNumbersTuple || !parsedToNumbersTuple.length)
@@ -120,7 +120,7 @@ export function getNumberOfPlayers(data: string[]): number | null {
   if (!hasUSD)
     return returnNullAndWarn(
       `does not have USD word to use to find number of players`,
-      data,
+      data
     )
   const numberOfPlayers = word?.split("USD")
   if (numberOfPlayers?.length !== 2)

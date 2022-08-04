@@ -7,6 +7,7 @@ import {
   rejectStyle,
 } from "../styles/dropzoneStyles"
 import { Component } from "../types"
+import { trpc } from "../utils/trpc"
 
 const rejectedFileTypeErrorMessage = `File type invalid. Please submit a .txt file and try again`
 const rejectedTextFileErrorMessage = `Pokerstars hand history file not recognised. Please try again`
@@ -14,8 +15,9 @@ const successMessage = `Successfully uploaded`
 
 interface Props extends Component {}
 
-export default function UploadPage({ testId }: Props) {
-  const [errorMsg, setErrorMsg] = useState("")
+export default function UploadPage({ testId = `upload-page` }: Props) {
+  const [errorMessage, setErrorMessage] = useState("")
+  const sendHandHistory = trpc.useMutation(["spinlyzer.create"])
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -25,21 +27,10 @@ export default function UploadPage({ testId }: Props) {
       reader.onerror = () => console.warn("file reading has failed")
       reader.onload = (e: ProgressEvent<FileReader>) => {
         const target = e.target as FileReader | null
-        if (!target?.result) return
-        console.warn("target.result", target.result)
-        // if (target?.result.includes(`PokerStars Tournament #`)) {
-        //   fetch('http://localhost:5000/data', {
-        //     method: 'post',
-        //     headers: {
-        //       Accept: 'application/json',
-        //       'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(e.target.result),
-        //   })
-        //   setErrorMsg(successMessage)
-        // } else {
-        //   setErrorMsg(rejectedTextFileErrorMessage)
-        // }
+        const handHistory = target?.result as string
+        if (!handHistory.includes(`PokerStars Tournament #`))
+          setErrorMessage(rejectedTextFileErrorMessage)
+        sendHandHistory.mutate(handHistory)
       }
     })
   }, [])
@@ -51,6 +42,9 @@ export default function UploadPage({ testId }: Props) {
     isDragAccept,
     isDragReject,
   } = useDropzone({
+    accept: {
+      "text/html": [".txt"],
+    },
     onDrop,
   })
 
@@ -64,6 +58,8 @@ export default function UploadPage({ testId }: Props) {
     [isDragActive, isDragReject, isDragAccept]
   )
 
+  console.log("errorMessage1111", errorMessage)
+
   return (
     <div data-testid={testId}>
       This is the upload page
@@ -71,7 +67,7 @@ export default function UploadPage({ testId }: Props) {
         <input {...getInputProps()} />
         <p>Upload hand histories</p>
       </div>
-      <div>{errorMsg}</div>
+      <div>{errorMessage}</div>
     </div>
   )
 }

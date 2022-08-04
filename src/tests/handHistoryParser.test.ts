@@ -16,7 +16,7 @@ import {
   handHistoryParser,
   putIntoArrayAndRemoveNewLines,
   resolveTotalBuyIn,
-} from "../server/router/handHistoryParser"
+} from "../utils/handHistoryParser"
 import {
   mockHandHistory1Converted,
   mockHandHistory1,
@@ -76,7 +76,7 @@ describe(`handhistoryParser.ts`, () => {
 
     it(`transforms the text data into an array of words and removes the new line tags`, () => {
       const result = putIntoArrayAndRemoveNewLines(mockHandHistory1)
-      const arrayOfNewLines = result.filter((word) => word.includes("/n"))
+      const arrayOfNewLines = result.filter(word => word.includes("/n"))
       expect(result).toEqual(mockHandHistory1Converted)
       expect(arrayOfNewLines).toEqual([])
     })
