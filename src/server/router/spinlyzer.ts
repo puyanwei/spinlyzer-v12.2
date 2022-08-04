@@ -3,15 +3,20 @@ import { z } from "zod"
 import { prisma } from "../db/client"
 import { handHistoryParser } from "../../utils/handHistoryParser"
 
-export const spinlyzerRouter = createRouter().mutation("create", {
+export const spinlyzerRouter = createRouter().mutation("add", {
   input: z.string(),
   async resolve({ input }) {
-    const data = await handHistoryParser(input)
-    const result = await prisma.spinlyzer.create({
-      data: {
-        result,
-      },
-    })
-    return { success: true, data: result }
+    try {
+      const statistics = await handHistoryParser(input)
+      const result = await prisma.statistics.create({
+        data: {
+          ...statistics,
+        },
+      })
+      return { success: true, data: result }
+    } catch (error) {
+      console.warn(error)
+      return { success: false, error }
+    }
   },
 })

@@ -1,6 +1,6 @@
 export function countHashKeys<
   T extends Record<string, string>,
-  U extends keyof T,
+  U extends keyof T
 >(data: T[], value: U): Record<string, number> | null {
   if (!data) return null
 
@@ -23,49 +23,47 @@ export function countHashKeys<
 export function findWord(
   array: string[],
   startingWord: string,
-  elementMovement: number = 0,
-): string | null {
-  if (array.length === 0) return returnNullAndWarn(`Data array is empty`, array)
-  if (!startingWord)
-    return returnNullAndWarn(`No starting word selected`, array)
+  elementMovement: number = 0
+): string {
+  if (array.length === 0) throw new Error(`Data array is empty`)
+  if (!startingWord) throw new Error(`No starting word selected`)
 
   const wordIndex = array?.indexOf(startingWord)
   const noMatchingWordFound = wordIndex === -1
-  if (noMatchingWordFound) returnNullAndWarn(`No word found`, array)
+  if (noMatchingWordFound) returnNullAndWarn(`No word found`)
 
   const finalIndex = wordIndex + elementMovement
-  if (finalIndex < 0)
-    return returnNullAndWarn(`Element movement parameter too low`, array)
+  if (finalIndex < 0) throw new Error(`Element movement parameter too low`)
   if (finalIndex > array.length)
-    return returnNullAndWarn(`Element movement parameter too high`, array)
+    throw new Error(`Element movement parameter too high`)
 
   return array[finalIndex]!
 }
 
-export function findCountries(data: string): string[] | null {
+export function findCountries(data: string): string[] {
   const array = data.split("),")
   const firstCountrySplitByBracket = array[0]?.split("(")
 
   const firstCountry =
     firstCountrySplitByBracket?.[firstCountrySplitByBracket.length - 1]
-  if (!firstCountry) return null
+  if (!firstCountry) throw new Error(`No data found`)
 
   const secondCountrySplitByBracket = array[1]?.split("(")
   const secondCountry =
     secondCountrySplitByBracket?.[secondCountrySplitByBracket.length - 1]
-  if (!secondCountry) return null
+  if (!secondCountry) throw new Error(`No data found`)
 
   const thirdCountrySplitByBracket = array[1]?.split("(")
   const thirdCountry =
     thirdCountrySplitByBracket?.[thirdCountrySplitByBracket.length - 1]
-  if (!thirdCountry) return null
+  if (!thirdCountry) throw new Error(`No data found`)
 
   return [firstCountry, secondCountry, thirdCountry]
 }
 
 export function returnNullAndWarn(
   message: string,
-  data: string[] = [""],
+  data: string[] = [""]
 ): null {
   if (!message) throw new Error(`Message not found`)
   console.warn(message, data)

@@ -17,7 +17,7 @@ interface Props extends Component {}
 
 export default function UploadPage({ testId = `upload-page` }: Props) {
   const [errorMessage, setErrorMessage] = useState("")
-  const sendHandHistory = trpc.useMutation(["spinlyzer.create"])
+  const sendHandHistory = trpc.useMutation(["spinlyzer.add"])
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
@@ -57,8 +57,6 @@ export default function UploadPage({ testId = `upload-page` }: Props) {
     }),
     [isDragActive, isDragReject, isDragAccept]
   )
-
-  console.log("errorMessage1111", errorMessage)
 
   return (
     <div data-testid={testId}>
