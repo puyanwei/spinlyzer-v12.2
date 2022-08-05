@@ -2,31 +2,9 @@ import {
   mockHandHistory1,
   mockHandHistory1Converted,
 } from "./mocks/handHistoryParserMocks"
-import {
-  countHashKeys,
-  findCountries,
-  findWord,
-  returnNullAndWarn,
-} from "../utils/helpers"
+import { countHashKeys, findCountries, findWord } from "../utils/helpers"
 
 describe(`utils.ts`, () => {
-  describe("returnNullAndWarn()", () => {
-    it("should return null and log a warning message in the console", () => {
-      const data = ["hello", "world", "this", "is", "a", "test"]
-
-      const consoleSpy = jest.spyOn(console, "warn")
-      const result = returnNullAndWarn("This is a warning", data)
-      expect(consoleSpy).toHaveBeenCalledWith("This is a warning", [
-        "hello",
-        "world",
-        "this",
-        "is",
-        "a",
-        "test",
-      ])
-      expect(result).toEqual(null)
-    })
-  })
   describe(`countHashKeys()`, () => {
     it(`should accept an array of objects and count the number of times a value was used on a specified key`, () => {
       const data = [
@@ -99,7 +77,7 @@ describe(`utils.ts`, () => {
       const result = findWord(
         ["hello", "world", "this", "is", "a", "test"],
         "hello",
-        7,
+        7
       )
       expect(result).toEqual(null)
     })

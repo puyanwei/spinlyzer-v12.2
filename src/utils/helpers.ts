@@ -30,7 +30,7 @@ export function findWord(
 
   const wordIndex = array?.indexOf(startingWord)
   const noMatchingWordFound = wordIndex === -1
-  if (noMatchingWordFound) returnNullAndWarn(`No word found`)
+  if (noMatchingWordFound) throw new Error(`No word found`)
 
   const finalIndex = wordIndex + elementMovement
   if (finalIndex < 0) throw new Error(`Element movement parameter too low`)
@@ -59,13 +59,4 @@ export function findCountries(data: string): string[] {
   if (!thirdCountry) throw new Error(`No data found`)
 
   return [firstCountry, secondCountry, thirdCountry]
-}
-
-export function returnNullAndWarn(
-  message: string,
-  data: string[] = [""]
-): null {
-  if (!message) throw new Error(`Message not found`)
-  console.warn(message, data)
-  return null
 }

@@ -1,4 +1,4 @@
-import { findCountries, findWord, returnNullAndWarn } from "./helpers"
+import { findCountries, findWord } from "./helpers"
 
 interface Statistics {
   tournamentNumber: number
