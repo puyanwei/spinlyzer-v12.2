@@ -87,9 +87,14 @@ describe(`handhistoryParser.ts`, () => {
       const result = getTournamentNumber(mockHandHistory1Converted)
       expect(result).toEqual(3205974213)
     })
-    it(`returns null if it does not find a word with a hashtag in it`, () => {
-      const result = getTournamentNumber(["hello", "world"])
-      expect(result).toEqual(null)
+    it(`throws an error if it does not find a word with a hashtag in it`, () => {
+      expect.assertions(2)
+      try {
+        getTournamentNumber(["hello", "world"])
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        expect(error).toHaveProperty("message", "Did not find # in data")
+      }
     })
   })
 
@@ -98,11 +103,14 @@ describe(`handhistoryParser.ts`, () => {
       const result = resolveTotalBuyIn(mockHandHistory1Converted)
       expect(result).toEqual([4.65, 0.35])
     })
-    it(`returns null if data does not contain both the rake and the buy in fee`, () => {
-      const result = resolveTotalBuyIn(["Hold'emBuy-In:", "$4.65"])
-      expect(result).toEqual(null)
-      const anotherResult = resolveTotalBuyIn(["Hold'emBuy-In:", "/$0.35"])
-      expect(anotherResult).toEqual(null)
+    it(`throws an error if data does not contain both the rake and the buy in fee`, () => {
+      expect.assertions(2)
+      try {
+        resolveTotalBuyIn(["Hold'emBuy-In:", "$4.65"])
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        expect(error).toHaveProperty("message", "Did not find a slash to split")
+      }
     })
   })
 

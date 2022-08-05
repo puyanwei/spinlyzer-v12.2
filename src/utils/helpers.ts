@@ -46,17 +46,17 @@ export function findCountries(data: string): string[] {
 
   const firstCountry =
     firstCountrySplitByBracket?.[firstCountrySplitByBracket.length - 1]
-  if (!firstCountry) throw new Error(`No data found`)
+  if (!firstCountry) throw new Error(`No first country found`)
 
   const secondCountrySplitByBracket = array[1]?.split("(")
   const secondCountry =
     secondCountrySplitByBracket?.[secondCountrySplitByBracket.length - 1]
-  if (!secondCountry) throw new Error(`No data found`)
+  if (!secondCountry) throw new Error(`No second country found`)
 
   const thirdCountrySplitByBracket = array[1]?.split("(")
   const thirdCountry =
     thirdCountrySplitByBracket?.[thirdCountrySplitByBracket.length - 1]
-  if (!thirdCountry) throw new Error(`No data found`)
+  if (!thirdCountry) throw new Error(`No third country found`)
 
   return [firstCountry, secondCountry, thirdCountry]
 }

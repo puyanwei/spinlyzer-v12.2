@@ -89,7 +89,7 @@ describe(`utils.ts`, () => {
     it("throws an error if final index is a higher then the total length of the array", () => {
       expect.assertions(2)
       try {
-        findWord(["hello", "world", "this", "is", "a", "test"], "hello", 7)
+        findWord(["hello", "world", "this", "is", "a", "test"], "hello", 8)
       } catch (error) {
         expect(error).toBeInstanceOf(Error)
         expect(error).toHaveProperty(
