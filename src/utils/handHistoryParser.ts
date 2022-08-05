@@ -61,28 +61,36 @@ export function putIntoArrayAndRemoveNewLines(data: string): string[] {
 
 export function getTournamentNumber(data: string[]): number {
   const arrayOfHashedWords = data.find(word => word.startsWith("#"))
-  if (!arrayOfHashedWords) throw new Error(`No data found`)
+  if (!arrayOfHashedWords) throw new Error(`Did not find # in data`)
   const tournamentNumber = arrayOfHashedWords?.substring(1) as string
   return parseInt(tournamentNumber)
 }
 
 export function getTotalBuyIn(data: string[]): number {
-  if (!getRake(data)) throw new Error(`No data found`)
-  if (!getBuyIn(data)) throw new Error(`No data found`)
+  if (!getRake(data)) throw new Error(`No rake data found`)
+  if (!getBuyIn(data)) throw new Error(`No buy in data found`)
   const totalBuyIn = getRake(data)! + getBuyIn(data)!
   return totalBuyIn
 }
 
 export function getRake(data: string[]): number {
-  if (!Array.isArray(resolveTotalBuyIn(data))) throw new Error(`No data found`)
-  if (!resolveTotalBuyIn(data)) throw new Error(`No data found`)
+  if (!Array.isArray(resolveTotalBuyIn(data)))
+    throw new Error(`Data is not an array`)
+  if (!resolveTotalBuyIn(data))
+    throw new Error(
+      `Did not resolve the total buy via getRake() in data correctly`
+    )
   const rake = resolveTotalBuyIn(data)?.[1] as number
   return rake
 }
 
 export function getBuyIn(data: string[]): number {
-  if (!Array.isArray(resolveTotalBuyIn(data))) throw new Error(`No data found`)
-  if (!resolveTotalBuyIn(data)) throw new Error(`No data found`)
+  if (!Array.isArray(resolveTotalBuyIn(data)))
+    throw new Error(`Data is not an array`)
+  if (!resolveTotalBuyIn(data))
+    throw new Error(
+      `Did not resolve the total buy via getBuyin() in data correctly`
+    )
   const rake = resolveTotalBuyIn(data)?.[0] as number
   return rake
 }
@@ -90,11 +98,11 @@ export function getBuyIn(data: string[]): number {
 export function resolveTotalBuyIn(data: string[]): number[] {
   const word = findWord(data, `Hold'emBuy-In:`, 1)
   const hasForwardSlash = word?.includes("/")
-  if (!hasForwardSlash) throw new Error(`has no slash to split`)
+  if (!hasForwardSlash) throw new Error(`Did not find a slash to split`)
   const buyInAndRakeTuple = word?.split("/")
 
   if (buyInAndRakeTuple?.length !== 2)
-    throw new Error(`split array does not have 2 elements`)
+    throw new Error(`Split array does not have 2 elements`)
 
   const removedDollarSymbolTuple = buyInAndRakeTuple?.map(price =>
     price.startsWith("$") ? price.substring(1) : price
@@ -104,10 +112,12 @@ export function resolveTotalBuyIn(data: string[]): number[] {
   )
 
   if (parsedToNumbersTuple.some(price => Number.isNaN(price)))
-    throw new Error(`unable to parse split elements`)
+    throw new Error(
+      `Unable to parse split elements, it is likely one or more elements are not numbers`
+    )
 
   if (!parsedToNumbersTuple || !parsedToNumbersTuple.length)
-    throw new Error(`Tuple is falsey`)
+    throw new Error(`Tuple is falsey or empty`)
 
   return parsedToNumbersTuple
 }
@@ -115,35 +125,37 @@ export function resolveTotalBuyIn(data: string[]): number[] {
 export function getNumberOfPlayers(data: string[]): number {
   const word = findWord(data, "playersTotal", -1)
   const hasUSD = word?.includes("USD")
-  if (!hasUSD) throw new Error(`No data found`)
+  if (!hasUSD) throw new Error(`USD word not found`)
   const numberOfPlayers = word?.split("USD")
-  if (numberOfPlayers?.length !== 2) throw new Error(`No data found`)
+  if (numberOfPlayers?.length !== 2)
+    throw new Error(`Array split did not have 2 elements`)
 
   const finalNumberOfPlayers = parseInt(numberOfPlayers[1]!)
-  if (Number.isNaN(finalNumberOfPlayers)) throw new Error(`No data found`)
+  if (Number.isNaN(finalNumberOfPlayers))
+    throw new Error(`Number of players is not a number`)
 
   return finalNumberOfPlayers
 }
 
 export function getPrizepool(data: string[]): number {
   const word = findWord(data, `Pool:`, 1)
-  if (!word?.startsWith("$")) throw new Error(`No data found`)
+  if (!word?.startsWith("$")) throw new Error(`Did not find a dollar sign`)
   const prizepool = parseFloat(word?.substring(1))
-  if (Number.isNaN(prizepool)) throw new Error(`No data found`)
+  if (Number.isNaN(prizepool)) throw new Error(`Prizepool is not a number`)
   return prizepool
 }
 
 export function getCurrency(data: string[]): string {
   const word = findWord(data, `Pool:`, 2)
-  if (!word?.includes("USD")) throw new Error(`No data found`)
+  if (!word?.includes("USD")) throw new Error(`Did not find USD`)
   return word
 }
 
 export function getDateStartedEasternTime(data: string[]): string {
   const date = findWord(data, `started`, 4)
   const time = findWord(data, `started`, 5)
-  if (findWord(data, `started`, 6) !== "ET]") throw new Error(`No data found`)
-  if (!date?.startsWith("[")) throw new Error(`No data found`)
+  if (findWord(data, `started`, 6) !== "ET]") throw new Error(`Did not find ET`)
+  if (!date?.startsWith("[")) throw new Error(`Did not find [`)
   const resolvedDate = date.substring(1)
   const dateAndTime = `${resolvedDate} ${time}`
   return dateAndTime
@@ -164,16 +176,19 @@ export function getThirdPlace(data: string[]): string {
 
 export function getFirstPlaceCountry(data: string): string {
   const countries = findCountries(data)
-  if (!countries?.length) throw new Error("No data found")
+  if (!countries?.length)
+    throw new Error("Did not find any first place countries")
   return countries[0]!
 }
 export function getSecondPlaceCountry(data: string): string {
   const countries = findCountries(data)
-  if (!countries?.length) throw new Error("No data found")
+  if (!countries?.length)
+    throw new Error("Did not find any second place countries")
   return countries[1]!
 }
 export function getThirdPlaceCountry(data: string): string {
   const countries = findCountries(data)
-  if (!countries?.length) throw new Error("No data found")
+  if (!countries?.length)
+    throw new Error("Did not find any third place countries")
   return countries[2]!
 }

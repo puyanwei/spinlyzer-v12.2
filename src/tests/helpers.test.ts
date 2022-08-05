@@ -65,21 +65,38 @@ describe(`utils.ts`, () => {
       const result = findWord(mockHandHistory1Converted, "Tournament", -1)
       expect(result).toEqual("PokerStars")
     })
-    it("returns null if no matching word is found", () => {
-      const result = findWord(mockHandHistory1Converted, "Pokemon")
-      expect(result).toEqual(null)
+    it("throws an error if no matching word is found", () => {
+      expect.assertions(2)
+      try {
+        findWord(mockHandHistory1Converted, "Pokemon")
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        expect(error).toHaveProperty("message", "No word found")
+      }
     })
-    it("returns null if final index is a negative number", () => {
-      const result = findWord(mockHandHistory1Converted, "PokerStars", -8)
-      expect(result).toEqual(null)
+    it("throws an error if final index is a negative number", () => {
+      expect.assertions(2)
+      try {
+        findWord(mockHandHistory1Converted, "PokerStars", -8)
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        expect(error).toHaveProperty(
+          "message",
+          "Element movement parameter too low"
+        )
+      }
     })
-    it("returns null if final index is a higher then the total length of the array", () => {
-      const result = findWord(
-        ["hello", "world", "this", "is", "a", "test"],
-        "hello",
-        7
-      )
-      expect(result).toEqual(null)
+    it("throws an error if final index is a higher then the total length of the array", () => {
+      expect.assertions(2)
+      try {
+        findWord(["hello", "world", "this", "is", "a", "test"], "hello", 7)
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        expect(error).toHaveProperty(
+          "message",
+          "Element movement parameter too high"
+        )
+      }
     })
   })
 
