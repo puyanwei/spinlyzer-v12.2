@@ -7,6 +7,7 @@ import {
   getNumberOfPlayers,
   getPrizepool,
   getRake,
+  getResult,
   getSecondPlace,
   getSecondPlaceCountry,
   getThirdPlace,
@@ -34,6 +35,7 @@ describe(`handhistoryParser.ts`, () => {
       numberOfPlayers: 3,
       prizePool: 10,
       rake: 0.35,
+      result: "1st",
       secondPlace: "bubonik90",
       secondPlaceCountry: "Russia",
       thirdPlace: "Lesnik995",
@@ -53,6 +55,7 @@ describe(`handhistoryParser.ts`, () => {
       numberOfPlayers: 3,
       prizePool: 15,
       rake: 0.35,
+      result: "1st",
       secondPlace: "nixON232",
       secondPlaceCountry: "Belarus",
       thirdPlace: "TotalBeton",
@@ -193,6 +196,12 @@ describe(`handhistoryParser.ts`, () => {
     it(`gets the country of first place`, () => {
       const result = getThirdPlaceCountry(mockHandHistory1)
       expect(result).toEqual("Russia")
+    })
+  })
+  describe(`getResult()`, () => {
+    it(`gets the result of the tournament`, () => {
+      const result = getResult(mockHandHistory1Converted)
+      expect(result).toEqual("1st")
     })
   })
 })

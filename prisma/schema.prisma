@@ -78,4 +78,5 @@ model Statistics {
     firstPlaceCountry String? 
     secondPlaceCountry String? 
     thirdPlaceCountry String? 
+    result String?
 }

@@ -1,21 +1,5 @@
+import { Statistics } from "../types"
 import { findCountries, findWord } from "./helpers"
-
-interface Statistics {
-  tournamentNumber: number
-  buyIn: number
-  rake: number
-  totalBuyIn: number
-  numberOfPlayers: number
-  prizePool: number
-  currency: string
-  dateStartedEasternTime: string
-  firstPlace: string
-  secondPlace: string
-  thirdPlace: string
-  firstPlaceCountry: string
-  secondPlaceCountry: string
-  thirdPlaceCountry: string
-}
 
 export function handHistoryParser(data: string): Statistics {
   const preparedHandHistory = putIntoArrayAndRemoveNewLines(data)
@@ -33,6 +17,8 @@ export function handHistoryParser(data: string): Statistics {
   const firstPlaceCountry = getFirstPlaceCountry(data)
   const secondPlaceCountry = getSecondPlaceCountry(data)
   const thirdPlaceCountry = getThirdPlaceCountry(data)
+  const result = getResult(preparedHandHistory)
+
   const statistics: Statistics = {
     tournamentNumber,
     rake,
@@ -48,6 +34,7 @@ export function handHistoryParser(data: string): Statistics {
     firstPlaceCountry,
     secondPlaceCountry,
     thirdPlaceCountry,
+    result,
   }
   return statistics
 }
@@ -69,7 +56,7 @@ export function getTournamentNumber(data: string[]): number {
 export function getTotalBuyIn(data: string[]): number {
   if (!getRake(data)) throw new Error(`No rake data found`)
   if (!getBuyIn(data)) throw new Error(`No buy in data found`)
-  const totalBuyIn = getRake(data)! + getBuyIn(data)!
+  const totalBuyIn = getRake(data) + getBuyIn(data)
   return totalBuyIn
 }
 
@@ -191,4 +178,9 @@ export function getThirdPlaceCountry(data: string): string {
   if (!countries?.length)
     throw new Error("Did not find any third place countries")
   return countries[2]!
+}
+
+export function getResult(data: string[]): string {
+  const word = findWord(data, `finished`, 2)
+  return word
 }
