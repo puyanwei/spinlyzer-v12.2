@@ -6,9 +6,10 @@ import {
   PrizePoolResults,
   resolveForLineChart,
 } from "../../utils/parserForCharts"
+import { countHashKeys, resolveForPieChart } from "../../utils/helpers"
 
 export const spinlyzerRouter = createRouter()
-  .mutation("add", {
+  .mutation("upload-handhistory-data", {
     input: z.string(),
     async resolve({ input }) {
       try {
@@ -27,25 +28,42 @@ export const spinlyzerRouter = createRouter()
   })
   .query("get-results-by-game", {
     async resolve({ ctx }) {
-      const profitDashboard = (await ctx.prisma.statistics.findMany({
-        select: {
-          prizePool: true,
-          result: true,
-          totalBuyIn: true,
-        },
-      })) as PrizePoolResults[]
-      const profitByResults = await resolveForLineChart(profitDashboard)
-      return { success: true, profitByResults }
+      try {
+        const profitDashboard = (await ctx.prisma.statistics.findMany({
+          select: {
+            prizePool: true,
+            result: true,
+            totalBuyIn: true,
+          },
+        })) as PrizePoolResults[]
+        const profitByResults = await resolveForLineChart(profitDashboard)
+        return { success: true, profitByResults }
+      } catch (error) {
+        console.warn(error)
+        return { success: false, error }
+      }
     },
   })
-.query("get-finish-positions", {
-async resolve({ ctx }) {
-  const finishPositions = (await ctx.prisma.statistics.findMany({
-    select: {
-      result: true,
+  .query("get-finish-positions", {
+    async resolve({ ctx }) {
+      try {
+        const finishPositions = await ctx.prisma.statistics.findMany({
+          select: {
+            result: true,
+          },
+        })
+        const objectOfPositions = countHashKeys(
+          finishPositions as Record<string, string>[],
+          "result"
+        )
+        console.log("objectOfPositions", objectOfPositions)
+        if (!objectOfPositions) throw new Error("No finish positions found")
+        return {
+          success: true,
+          finishPositionDistribution: resolveForPieChart(objectOfPositions),
+        }
+      } catch (error) {
+        return { success: false, error }
+      }
     },
-  })) as PrizePoolResults[]
-  const finishPositionsByResults = await resolveForLineChart(finishPositions)
-  return { success: true, finishPositionsByResults }
-}
-})
+  })

@@ -1,4 +1,4 @@
-import { PieChart, Pie, Cell, XAxis, Label, Tooltip } from "recharts"
+import { PieChart, Pie, Cell, Tooltip } from "recharts"
 import { trpc } from "../../utils/trpc"
 
 interface RenderCustomizedLabelProps {
@@ -12,17 +12,12 @@ interface RenderCustomizedLabelProps {
 }
 
 export function FinishPositionDistribution() {
-  // const { data, isLoading, error } = trpc.useQuery([
-  //   "spinlyzer.get-finish-positions",
-  // ])
-  // if (isLoading) return <div>Loading...</div>
-  // if (error) return <div>Error: {error.message}</div>
-
-  const mockData = [
-    { name: "1st", value: 133, fill: "#8884d8" },
-    { name: "2nd", value: 135, fill: "#82ca9d" },
-    { name: "3rd", value: 86, fill: "#ffc658" },
-  ]
+  const { data, isLoading, error } = trpc.useQuery([
+    "spinlyzer.get-finish-positions",
+  ])
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
+  console.log("data", data)
 
   function renderCustomizedLabel({
     cx,
@@ -44,10 +39,12 @@ export function FinishPositionDistribution() {
     )
   }
 
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
+
   return (
     <PieChart width={800} height={500}>
       <Pie
-        data={mockData}
+        data={data?.finishPositionDistribution}
         dataKey="value"
         nameKey="name"
         label={renderCustomizedLabel}
@@ -56,10 +53,9 @@ export function FinishPositionDistribution() {
         outerRadius={150}
         labelLine={false}
       />
-      {mockData.map((entry, index) => {
-        const colors = ["#8884d8", "#82ca9d", "#ffc658"]
-        return <Cell key={`cell-${index}`} fill={colors[index]} />
-      })}
+      {data?.finishPositionDistribution?.map((entry, index) => (
+        <Cell fill={COLORS[index % COLORS.length]} />
+      ))}
       <Tooltip />
     </PieChart>
   )

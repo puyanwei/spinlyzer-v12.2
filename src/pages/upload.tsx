@@ -17,7 +17,9 @@ interface Props extends Component {}
 
 export default function UploadPage({ testId = `upload-page` }: Props) {
   const [errorMessage, setErrorMessage] = useState("")
-  const sendHandHistory = trpc.useMutation(["spinlyzer.add"])
+  const sendHandHistory = trpc.useMutation([
+    "spinlyzer.upload-handhistory-data",
+  ])
 
   const onDrop = useCallback((acceptedFiles: Blob[]) => {
     acceptedFiles.forEach((file: Blob) => {
