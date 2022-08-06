@@ -8,7 +8,7 @@ export function handHistoryParser(data: string): Statistics {
   const rake = getRake(preparedHandHistory)
   const totalBuyIn = getTotalBuyIn(preparedHandHistory)
   const numberOfPlayers = getNumberOfPlayers(preparedHandHistory)
-  const prizePool = getPrizepool(preparedHandHistory)
+  const prizePool = getPrizePool(preparedHandHistory)
   const currency = getCurrency(preparedHandHistory)
   const dateStartedEasternTime = getDateStartedEasternTime(preparedHandHistory)
   const firstPlace = getFirstPlace(preparedHandHistory)
@@ -124,12 +124,12 @@ export function getNumberOfPlayers(data: string[]): number {
   return finalNumberOfPlayers
 }
 
-export function getPrizepool(data: string[]): number {
+export function getPrizePool(data: string[]): number {
   const word = findWord(data, `Pool:`, 1)
   if (!word?.startsWith("$")) throw new Error(`Did not find a dollar sign`)
-  const prizepool = parseFloat(word?.substring(1))
-  if (Number.isNaN(prizepool)) throw new Error(`Prizepool is not a number`)
-  return prizepool
+  const prizePool = parseFloat(word?.substring(1))
+  if (Number.isNaN(prizePool)) throw new Error(`Prizepool is not a number`)
+  return prizePool
 }
 
 export function getCurrency(data: string[]): string {

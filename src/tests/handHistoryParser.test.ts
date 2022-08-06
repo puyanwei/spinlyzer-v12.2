@@ -5,7 +5,7 @@ import {
   getFirstPlace,
   getFirstPlaceCountry,
   getNumberOfPlayers,
-  getPrizepool,
+  getPrizePool,
   getRake,
   getResult,
   getSecondPlace,
@@ -144,9 +144,9 @@ describe(`handhistoryParser.ts`, () => {
       expect(result).toEqual(3)
     })
   })
-  describe(`getPrizepool()`, () => {
+  describe(`getPrizePool()`, () => {
     it(`gets the prize pool`, () => {
-      const result = getPrizepool(mockHandHistory1Converted)
+      const result = getPrizePool(mockHandHistory1Converted)
       expect(result).toEqual(10)
     })
   })

@@ -2,6 +2,10 @@ import { createRouter } from "./context"
 import { z } from "zod"
 import { prisma } from "../db/client"
 import { handHistoryParser } from "../../utils/handHistoryParser"
+import {
+  PrizePoolResults,
+  resolveForLineChart,
+} from "../../utils/parserForCharts"
 
 export const spinlyzerRouter = createRouter()
   .mutation("add", {
@@ -23,15 +27,14 @@ export const spinlyzerRouter = createRouter()
   })
   .query("get-statistics", {
     async resolve({ ctx }) {
-      const profitDashboard = await ctx.prisma.statistics.findMany({
+      const profitDashboard = (await ctx.prisma.statistics.findMany({
         select: {
           prizePool: true,
           result: true,
+          totalBuyIn: true,
         },
-      })
-      console.log("profitDashboard", profitDashboard)
-
-      const data = { ...profitDashboard }
-      return { success: true, data: data }
+      })) as PrizePoolResults[]
+      const profitByResults = await resolveForLineChart(profitDashboard)
+      return { success: true, profitByResults }
     },
   })
