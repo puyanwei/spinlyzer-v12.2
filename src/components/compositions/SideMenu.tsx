@@ -32,12 +32,12 @@ export default function SideMenu() {
           </span>
         </div>
         <div className="flex flex-col">
-          <span className="flex items-center py-4">
+          {/* <span className="flex items-center py-4">
             <GearIcon />
             <Link href="/settings">
               <a className="ml-4">Settings</a>
             </Link>
-          </span>
+          </span> */}
           <span className="flex items-center py-4">
             <LogoutIcon />
             <Link href="/api/auth/signout">

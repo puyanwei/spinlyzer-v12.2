@@ -25,7 +25,7 @@ export const spinlyzerRouter = createRouter()
       }
     },
   })
-  .query("get-statistics", {
+  .query("get-results-by-game", {
     async resolve({ ctx }) {
       const profitDashboard = (await ctx.prisma.statistics.findMany({
         select: {
@@ -38,3 +38,14 @@ export const spinlyzerRouter = createRouter()
       return { success: true, profitByResults }
     },
   })
+.query("get-finish-positions", {
+async resolve({ ctx }) {
+  const finishPositions = (await ctx.prisma.statistics.findMany({
+    select: {
+      result: true,
+    },
+  })) as PrizePoolResults[]
+  const finishPositionsByResults = await resolveForLineChart(finishPositions)
+  return { success: true, finishPositionsByResults }
+}
+})
