@@ -5,8 +5,8 @@ export interface PrizePoolResults {
 }
 
 export interface ProfitByResults {
-  gameNumber: number
-  profit: number
+  x: number
+  y: number
 }
 
 export function resolveForLineChart(
@@ -14,22 +14,22 @@ export function resolveForLineChart(
 ): ProfitByResults[] {
   const result = data?.reduce((array, current, index) => {
     const { result, prizePool, totalBuyIn } = current
-    const previousProfit = array[index - 1]?.profit || 0
+    const previousProfit = array[index - 1]?.y || 0
 
     const updatedArray =
       result === "1st"
         ? [
             ...array,
             {
-              gameNumber: index,
-              profit: previousProfit + (prizePool - totalBuyIn),
+              x: index,
+              y: previousProfit + (prizePool - totalBuyIn),
             },
           ]
         : [
             ...array,
             {
-              gameNumber: index,
-              profit: previousProfit - (prizePool - totalBuyIn),
+              x: index,
+              y: previousProfit - totalBuyIn,
             },
           ]
     return updatedArray
