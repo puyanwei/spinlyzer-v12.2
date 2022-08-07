@@ -5,7 +5,7 @@ export default function AnalysisPage() {
   return (
     <div className="p-4">
       <h1>Analysis</h1>
-      {/* <ProfitByNumberOfGames /> */}
+      <ProfitByNumberOfGames />
       <FinishPositionDistribution />
     </div>
   )

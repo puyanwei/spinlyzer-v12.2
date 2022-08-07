@@ -56,7 +56,6 @@ export const spinlyzerRouter = createRouter()
           finishPositions as Record<string, string>[],
           "result"
         )
-        console.log("objectOfPositions", objectOfPositions)
         if (!objectOfPositions) throw new Error("No finish positions found")
         return {
           success: true,
