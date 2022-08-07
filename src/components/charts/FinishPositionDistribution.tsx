@@ -31,6 +31,7 @@ export function FinishPositionDistribution() {
         style={{
           labels: { fontSize: 12, fill: "black" },
         }}
+        labels={({ datum }) => [datum.x, datum.y]}
       />
     </svg>
   )
