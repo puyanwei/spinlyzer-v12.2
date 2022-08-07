@@ -5,8 +5,9 @@ import { handHistoryParser } from "../../utils/handHistoryParser"
 import {
   PrizePoolResults,
   resolveForLineChart,
+  resolveForPieChart,
 } from "../../utils/parserForCharts"
-import { countHashKeys, resolveForPieChart } from "../../utils/helpers"
+import { countHashKeys } from "../../utils/helpers"
 
 export const spinlyzerRouter = createRouter()
   .mutation("upload-handhistory-data", {
@@ -57,9 +58,10 @@ export const spinlyzerRouter = createRouter()
           "result"
         )
         if (!objectOfPositions) throw new Error("No finish positions found")
+
         return {
           success: true,
-          finishPositionDistribution: resolveForPieChart(objectOfPositions),
+          finishPositionByNumber: resolveForPieChart(objectOfPositions),
         }
       } catch (error) {
         return { success: false, error }

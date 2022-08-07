@@ -2,12 +2,8 @@ import {
   mockHandHistory1,
   mockHandHistory1Converted,
 } from "./mocks/handHistoryParserMocks"
-import {
-  countHashKeys,
-  findCountries,
-  findWord,
-  resolveForPieChart,
-} from "../utils/helpers"
+import { countHashKeys, findCountries, findWord } from "../utils/helpers"
+import { resolveForPieChart } from "../utils/parserForCharts"
 
 describe(`utils.ts`, () => {
   describe(`countHashKeys()`, () => {
@@ -116,9 +112,9 @@ describe(`utils.ts`, () => {
     it(`parses the object into array of objects with the key is the name's value and the value is the value`, () => {
       const args = { "2nd": 464, "3rd": 325, "1st": 447 }
       const result = [
-        { name: "2nd", value: 464 },
-        { name: "3rd", value: 325 },
-        { name: "1st", value: 447 },
+        { x: "2nd", y: 464, z: "37.5%" },
+        { x: "3rd", y: 325, z: "26.3%" },
+        { x: "1st", y: 447, z: "36.2%" },
       ]
       expect(resolveForPieChart(args)).toEqual(result)
     })

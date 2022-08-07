@@ -60,21 +60,3 @@ export function findCountries(data: string): string[] {
 
   return [firstCountry, secondCountry, thirdCountry]
 }
-
-interface ResolvedPieChartData {
-  name: "1st" | "2nd" | "3rd"
-  value: number
-}
-
-export function resolveForPieChart(
-  data: Record<string, number>
-): ResolvedPieChartData[] {
-  let finishPositionDistribution: ResolvedPieChartData[] = []
-  Object.entries(data).forEach(([key, value]) => {
-    finishPositionDistribution.push({
-      name: key,
-      value: value,
-    } as ResolvedPieChartData)
-  })
-  return finishPositionDistribution
-}
